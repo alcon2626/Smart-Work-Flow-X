@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "390858261168",
+    "firebase_url": "https://smart-workflow-144316.firebaseio.com",
+    "project_id": "smart-workflow-144316",
+    "storage_bucket": "smart-workflow-144316.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:390858261168:android:557033609938bc5f",
+        "android_client_info": {
+          "package_name": "com.smartworkflow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "390858261168-6634urr3lpac0mvnclcmpcof875v6kdh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.smartworkflow",
+            "certificate_hash": "70678DD33E5FDB394560C4FF78ED1446E9208907"
+          }
+        },
+        {
+          "client_id": "390858261168-u6ju4oioebajagm6ht4kb0v40o5dq14k.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "390858261168-0vsqha7m5jcpa6dbstcptha5sqhsc7qn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9-kxf7hi95jqxNpEMn445Qe5l43vAPMI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

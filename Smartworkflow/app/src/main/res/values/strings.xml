@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Smart workflow</string>
+    <string name="new_account">Create a new account</string>
+    <string name="RegisterUser">Sign up!</string>
+    <string name="Welcome">Welcome to Smart Workflow</string>
+    <string name="SignInHelpPassword">Enter your password</string>
+    <string name="SignInHelpEmail">Enter your email</string>
+    <string name="OR">or</string>
+    <string name="SignUpWith">sign in with</string>
+</resources>
