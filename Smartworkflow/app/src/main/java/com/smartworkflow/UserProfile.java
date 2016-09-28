@@ -1,9 +1,9 @@
 package com.smartworkflow;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.app.Activity;
 
-public class UserProfile extends AppCompatActivity {
+public class UserProfile extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
