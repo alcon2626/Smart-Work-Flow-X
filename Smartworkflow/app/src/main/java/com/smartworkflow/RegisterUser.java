@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.AuthResult;
@@ -52,6 +53,7 @@ public class RegisterUser extends AppCompatActivity {
                 if (TextUtils.isEmpty(Password)){
                     Toast.makeText(RegisterUser.this, "Please enter password", Toast.LENGTH_SHORT).show();
                 }
+
                 RegistrationPoccess(Email, Password);
             }
         });
@@ -77,6 +79,15 @@ public class RegisterUser extends AppCompatActivity {
                             Intent UserProfile = new Intent(RegisterUser.this, com.smartworkflow.UserProfile.class);
                             startActivity(UserProfile);
 
+                        }else{
+                            task.addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    progressbdialog.cancel();
+                                    Toast.makeText(RegisterUser.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                                }
+                            });
                         }
                     }
                 });
