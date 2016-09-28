@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_register_user"
     android:layout_width="match_parent"
@@ -10,29 +11,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.smartworkflow.RegisterUser">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="145dp"
-        android:id="@+id/UserEmail"
-        android:hint="Enter you email" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:layout_below="@+id/UserEmail"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/UserPassword"
-        android:hint="Enter your password" />
-
     <Button
         android:text="@string/RegisterUser"
         android:layout_width="wrap_content"
@@ -41,5 +19,69 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="11dp"
-        android:id="@+id/Register_button" />
+        android:id="@+id/Register_button"
+        android:textColor="@color/MediumSeaGreen"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@mipmap/splash_icon"
+        android:id="@+id/imageView2"
+        android:layout_alignBottom="@+id/WelcomeUser"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="62dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:id="@+id/UserEmail"
+        android:hint="@string/EnterEmail"
+        android:layout_above="@+id/UserPassword"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/Register_button"
+        android:layout_toStartOf="@+id/Register_button" />
+
+    <TextView
+        android:text="@string/SetUpWelcomeUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/WelcomeUser"
+        android:textAppearance="@android:style/TextAppearance.Material.DialogWindowTitle"
+        android:layout_marginBottom="88dp"
+        android:layout_above="@+id/UserPassword"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/UserPassword"
+        android:hint="@string/EnterPassword"
+        android:layout_marginBottom="46dp"
+        android:layout_above="@+id/Register_button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/UserEmail"
+        android:layout_alignEnd="@+id/UserEmail" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/UserName"
+        android:hint="@string/Name"
+        android:layout_above="@+id/UserEmail"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/UserEmail"
+        android:layout_alignEnd="@+id/UserEmail" />
 </RelativeLayout>
