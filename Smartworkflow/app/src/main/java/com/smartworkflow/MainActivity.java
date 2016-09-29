@@ -1,7 +1,9 @@
 package com.smartworkflow;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Build;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            super.setTheme(android.R.style.Theme_Light);
+            super.setTheme(R.style.MyAppThemeCustome);
         }
         super.onCreate(savedInstanceState);
 
@@ -161,6 +163,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+    @Override
+    public void onBackPressed(){
+        finish();
     }
 
     @Override

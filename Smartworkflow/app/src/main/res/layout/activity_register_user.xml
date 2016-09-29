@@ -22,18 +22,6 @@
         android:id="@+id/Register_button"
         android:textColor="@color/MediumSeaGreen"/>
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@mipmap/splash_icon"
-        android:id="@+id/imageView2"
-        android:layout_alignBottom="@+id/WelcomeUser"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="62dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -46,17 +34,6 @@
         android:layout_alignParentStart="true"
         android:layout_toLeftOf="@+id/Register_button"
         android:layout_toStartOf="@+id/Register_button" />
-
-    <TextView
-        android:text="@string/SetUpWelcomeUser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/WelcomeUser"
-        android:textAppearance="@android:style/TextAppearance.Material.DialogWindowTitle"
-        android:layout_marginBottom="88dp"
-        android:layout_above="@+id/UserPassword"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -84,4 +61,23 @@
         android:layout_alignParentStart="true"
         android:layout_alignRight="@+id/UserEmail"
         android:layout_alignEnd="@+id/UserEmail" />
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:srcCompat="@mipmap/splash_icon"
+        android:id="@+id/imageView2"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="@string/SetUpWelcomeUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/WelcomeUser"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+        android:layout_below="@+id/imageView2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

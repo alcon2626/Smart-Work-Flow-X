@@ -8,10 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="MyAppThemeCustome" parent="AppTheme">
+    <style name="MyAppThemeCustome" parent="Theme.AppCompat.Light">
         <item name="android:colorBackground">@color/AliceBlue</item>
         <item name="android:colorForeground">@color/Black</item>
         <item name="android:textColorPrimary">@color/Black</item>
-        <item name="android:windowBackground">@android:color/background_dark</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="colorPrimary">@color/MediumSpringGreen</item>
     </style>
 </resources>

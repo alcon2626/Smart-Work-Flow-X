@@ -5,19 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.smartworkflow.UserProfile">
+
     <LinearLayout
         android:gravity="end"
-        android:layout_width="380dp"
-        android:layout_height="50dp"
-        android:layout_gravity="bottom">
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:layout_gravity="bottom"
+        android:weightSum="1">
+
         <ImageButton
             android:layout_gravity="end"
-            android:layout_width="51dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
             android:background="@mipmap/clockinout"
             android:adjustViewBounds="false"
             android:id="@+id/ClockInOut"
-            android:layout_marginTop="335dp"/>
+            android:layout_marginTop="302dp" />
     </LinearLayout>
 
 
@@ -34,15 +37,6 @@
                 android:layout_height="wrap_content"
                 android:background="@mipmap/genericperson"
                 android:id="@+id/ProfilePicture" />
-
-            <TextView
-                android:text="@string/large_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView3"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/ProfilePicture" />
 
             <ImageView
                 android:layout_width="30dp"
@@ -72,6 +66,17 @@
                 android:layout_toRightOf="@+id/ProfilePicture"
                 android:layout_toEndOf="@+id/ProfilePicture"
                 android:layout_marginBottom="12dp" />
+
+            <TextView
+                android:text="@string/large_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView3"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="10dp"
+                android:layout_below="@+id/ProfilePicture" />
 
         </RelativeLayout>
 

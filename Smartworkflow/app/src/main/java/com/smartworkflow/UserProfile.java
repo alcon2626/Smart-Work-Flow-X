@@ -21,7 +21,7 @@ public class UserProfile extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            super.setTheme(android.R.style.Theme_Holo_Light);
+            super.setTheme(R.style.MyAppThemeCustome);
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
