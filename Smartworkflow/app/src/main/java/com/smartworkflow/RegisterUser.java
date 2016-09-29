@@ -2,6 +2,7 @@ package com.smartworkflow;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,18 +22,23 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Map;
 
 public class RegisterUser extends AppCompatActivity {
-    EditText Useremail, Userpassword;
+    EditText Useremail, Userpassword, Username;
     Button SignUp;
-    String Email, Password;
+    String Email, Password, User_Name;
     ProgressDialog progressbdialog;
     FirebaseAuth authenticator;
+    FirebaseUser CurrentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            super.setTheme(android.R.style.Theme_Holo_Light);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_user);
         progressbdialog = new ProgressDialog(this);
@@ -47,12 +53,14 @@ public class RegisterUser extends AppCompatActivity {
                 //after getting info set the registration proccess
                 Email = Useremail.getText().toString().trim();
                 Password = Userpassword.getText().toString().trim();
+                Username = (EditText) findViewById(R.id.UserName);
                 if (TextUtils.isEmpty(Email)){
                     Toast.makeText(RegisterUser.this, "Please enter email", Toast.LENGTH_SHORT).show();
                 }
                 if (TextUtils.isEmpty(Password)){
                     Toast.makeText(RegisterUser.this, "Please enter password", Toast.LENGTH_SHORT).show();
                 }
+                User_Name = Username.getText().toString().trim();
 
                 RegistrationPoccess(Email, Password);
             }
@@ -75,6 +83,11 @@ public class RegisterUser extends AppCompatActivity {
                             //start profile activity
                             // for now only display toast
                             Toast.makeText(RegisterUser.this, "Registration successful!", Toast.LENGTH_SHORT).show();
+                            CurrentUser = authenticator.getCurrentUser();
+                            assert CurrentUser != null;
+                            CurrentUser.sendEmailVerification();
+
+
                             progressbdialog.cancel();
                             Intent UserProfile = new Intent(RegisterUser.this, com.smartworkflow.UserProfile.class);
                             startActivity(UserProfile);

@@ -19,6 +19,9 @@ import android.widget.Toast;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -36,7 +39,6 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
     private static final int RC_SIGN_IN = 1;
     TextView Register_User;
-    TextView mStatusTextView;
     ImageButton UserSignIn, GooglesignIn;
     FirebaseAuth aunthenticator;
     EditText UserEmail;
@@ -48,8 +50,22 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            super.setTheme(android.R.style.Theme_Light);
+        }
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+
+
+        //init adds
+        AdRequest request = new AdRequest.Builder()
+                .addTestDevice("D599B82756D2C99F4C2326F0BFF81C67")  // An example device ID
+                .setGender(AdRequest.GENDER_MALE)
+                .build();
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        mAdView.loadAd(request);
+        //init user authenticator
         aunthenticator = FirebaseAuth.getInstance();
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -141,10 +157,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             }
         });
     }
-    @Override
-    public void onBackPressed() {
-        finish();
-    }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
@@ -217,3 +229,4 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 });
     }
 }
+        

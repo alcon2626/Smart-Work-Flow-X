@@ -13,7 +13,7 @@
     <color name="purple">#800080</color>
     <color name="maroon">#800000</color>
     <color name="aqua">#00FFFF</color>
-    <color name="lime">#00FF00</color>
+    <color name="lime">#00ff00</color>
     <color name="teal">#008080</color>
     <color name="green">#008000</color>
     <color name="blue">#0000FF</color>
@@ -22,7 +22,7 @@
     <color name="Ivory">#FFFFF0</color>
     <color name="LightYellow">#FFFFE0</color>
     <color name="Snow">#FFFAFA</color>
-    <color name="FloralWhite">#FFFAF0</color>
+    <color name="FloralWhite">#fffaf0</color>
     <color name="LemonChiffon">#FFFACD</color>
     <color name="Cornsilk">#FFF8DC</color>
     <color name="Seashell">#FFF5EE</color>
@@ -59,7 +59,7 @@
     <color name="SandyBrown">#F4A460</color>
     <color name="Azure">#F0FFFF</color>
     <color name="Honeydew">#F0FFF0</color>
-    <color name="AliceBlue">#F0F8FF</color>
+    <color name="AliceBlue">#f0f8ff</color>
     <color name="Khaki">#F0E68C</color>
     <color name="LightCoral">#F08080</color>
     <color name="PaleGoldenrod">#EEE8AA</color>
@@ -90,7 +90,7 @@
     <color name="LightSteelBlue">#B0C4DE</color>
     <color name="PaleTurquoise">#AFEEEE</color>
     <color name="GreenYellow">#ADFF2F</color>
-    <color name="LightBlue">#ADD8E6</color>
+    <color name="LightBlue">#add8e6</color>
     <color name="DarkGray">#A9A9A9</color>
     <color name="Brown">#A52A2A</color>
     <color name="Sienna">#A0522D</color>
@@ -109,7 +109,7 @@
     <color name="SkyBlue">#87CEEB</color>
     <color name="Purple">#800080</color>
     <color name="Maroon">#800000</color>
-    <color name="Aquamarine">#7FFFD4</color>
+    <color name="Aquamarine">#7fffd4</color>
     <color name="Chartreuse">#7FFF00</color>
     <color name="LawnGreen">#7CFC00</color>
     <color name="MediumSlateBlue">#7B68EE</color>
@@ -128,7 +128,7 @@
     <color name="SteelBlue">#4682B4</color>
     <color name="RoyalBlue">#4169E1</color>
     <color name="Turquoise">#40E0D0</color>
-    <color name="MediumSeaGreen">#3CB371</color>
+    <color name="MediumSeaGreen">#3cb371</color>
     <color name="LimeGreen">#32CD32</color>
     <color name="DarkSlateGray">#2F4F4F</color>
     <color name="SeaGreen">#2E8B57</color>
@@ -137,10 +137,10 @@
     <color name="DodgerBlue">#1E90FF</color>
     <color name="MidnightBlue">#191970</color>
     <color name="Aqua">#00FFFF</color>
-    <color name="Cyan">#00FFFF</color>
+    <color name="Cyan">#00ffff</color>
     <color name="SpringGreen">#00FF7F</color>
     <color name="Lime">#00FF00</color>
-    <color name="MediumSpringGreen">#00FA9A</color>
+    <color name="MediumSpringGreen">#00fa9a</color>
     <color name="DarkTurquoise">#00CED1</color>
     <color name="DeepSkyBlue">#00BFFF</color>
     <color name="DarkCyan">#008B8B</color>

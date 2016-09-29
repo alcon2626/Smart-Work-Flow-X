@@ -7,12 +7,13 @@
     <string name="SignInHelpEmail">Enter your email</string>
     <string name="OR">or</string>
     <string name="SignUpWith">sign in with</string>
-    <string name="title_activity_user_profile">UserProfile</string>
+    <string name="title_activity_user_profile">User Profile</string>
     <string name="EnterEmail">Enter your email</string>
     <string name="EnterPassword">Enter your password</string>
     <string name="SetUpWelcomeUser">Welcome to Smart workflow, Let\'s get you started</string>
     <string name="Name">Enter your name</string>
     <string name="Company">Organization name</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

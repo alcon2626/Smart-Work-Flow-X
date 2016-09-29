@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MyAppThemeCustome" parent="AppTheme">
+        <item name="android:colorAccent">@color/MediumSeaGreen</item>
+        <item name="android:colorBackground">@color/AliceBlue</item>
+        <item name="android:colorForeground">@color/Black</item>
+        <item name="android:textColorPrimary">@color/Black</item>
+        <item name="android:colorPrimary">@color/MediumSeaGreen</item>
+        <item name="android:windowBackground">@android:color/background_dark</item>
+        <item name="android:statusBarColor">@color/MediumSpringGreen</item>
+        <item name="android:navigationBarColor">@color/MediumSpringGreen</item>
+    </style>
+</resources>

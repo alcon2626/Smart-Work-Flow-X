@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v7.app.AlertDialog;
@@ -19,6 +20,9 @@ public class UserProfile extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            super.setTheme(android.R.style.Theme_Holo_Light);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
         aunthenticator = FirebaseAuth.getInstance();
