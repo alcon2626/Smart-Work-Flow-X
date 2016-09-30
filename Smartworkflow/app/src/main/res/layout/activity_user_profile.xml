@@ -17,7 +17,7 @@
             android:layout_gravity="end"
             android:layout_width="73dp"
             android:layout_height="70dp"
-            android:background="@mipmap/clockbutton2"
+            android:background="@mipmap/clockbutton1"
             android:adjustViewBounds="false"
             android:id="@+id/ClockInOut"
             android:layout_marginTop="302dp" />
@@ -45,7 +45,10 @@
                 android:id="@+id/imageView"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/clockout"
+                android:cropToPadding="false"
+                android:adjustViewBounds="false" />
 
             <TextView
                 android:text="@string/Name"
