@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -164,9 +165,23 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+    private Boolean exit = false;
     @Override
     public void onBackPressed(){
-        finish();
+        if (exit) {
+            finish(); // finish activity
+        } else {
+            Toast.makeText(this, "Press Back again to Exit.",
+                    Toast.LENGTH_SHORT).show();
+            exit = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    exit = false;
+                }
+            }, 3 * 1000);
+
+        }
     }
 
     @Override

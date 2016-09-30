@@ -15,9 +15,9 @@
 
         <ImageButton
             android:layout_gravity="end"
-            android:layout_width="wrap_content"
+            android:layout_width="73dp"
             android:layout_height="70dp"
-            android:background="@mipmap/clockinout"
+            android:background="@mipmap/clockbutton2"
             android:adjustViewBounds="false"
             android:id="@+id/ClockInOut"
             android:layout_marginTop="302dp" />
