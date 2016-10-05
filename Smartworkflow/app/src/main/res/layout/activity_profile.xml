@@ -23,29 +23,19 @@
         app:srcCompat="@mipmap/ic_add_circle_black_48dp" />
 
 
+    <include layout="@layout/content_profile" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_2"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
+        android:layout_gravity="center_vertical|right"
         android:layout_margin="@dimen/fab_margin"
         android:src="@mipmap/ic_email_black_48dp"
         android:visibility="visible"
         app:backgroundTint="@color/MediumSeaGreen"
         app:fabSize="mini"
-        app:layout_anchorGravity="bottom|center_horizontal" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@mipmap/ic_access_time_black_48dp"
-        android:visibility="visible"
-        app:backgroundTint="@color/MediumSeaGreen"
-        app:fabSize="mini"
-        app:layout_anchorGravity="center_vertical|right" />
+        app:layout_anchorGravity="center_vertical|left" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_1"
@@ -56,9 +46,19 @@
         android:visibility="visible"
         app:backgroundTint="@color/MediumSeaGreen"
         app:fabSize="mini"
-        android:layout_gravity="bottom|end"
-        app:layout_anchorGravity="center_vertical|center_horizontal" />
+        android:layout_gravity="bottom|center_horizontal"
+        app:layout_anchorGravity="bottom|center_horizontal" />
 
-    <include layout="@layout/content_profile" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@mipmap/ic_access_time_black_48dp"
+        android:visibility="visible"
+        app:backgroundTint="@color/MediumSeaGreen"
+        app:fabSize="mini"
+        app:layout_anchorGravity="center_vertical|center_horizontal" />
 
 </android.support.design.widget.CoordinatorLayout>
