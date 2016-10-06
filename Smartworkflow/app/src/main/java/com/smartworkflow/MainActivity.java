@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
                     @Override
                     public void onAuthenticated(AuthData authData) {
-                        Intent UserProfile = new Intent(MainActivity.this, UserProfile.class);
+                        Intent UserProfile = new Intent(MainActivity.this, Profile.class);
                         startActivity(UserProfile);
                     }
 
@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    Intent UserProfile = new Intent(MainActivity.this, UserProfile.class);
+                                    Intent UserProfile = new Intent(MainActivity.this, Profile.class);
                                     startActivity(UserProfile);
                                     UserEmail.setText("");
                                     Userpassword.setText("");
@@ -239,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
-                        Intent UserProfile = new Intent(MainActivity.this, UserProfile.class);
+                        Intent UserProfile = new Intent(MainActivity.this, Profile.class);
                         startActivity(UserProfile);
                         UserEmail.setText("");
                         Userpassword.setText("");

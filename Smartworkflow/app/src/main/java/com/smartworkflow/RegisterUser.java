@@ -89,7 +89,7 @@ public class RegisterUser extends AppCompatActivity {
 
 
                             progressbdialog.cancel();
-                            Intent UserProfile = new Intent(RegisterUser.this, com.smartworkflow.UserProfile.class);
+                            Intent UserProfile = new Intent(RegisterUser.this, com.smartworkflow.Profile.class);
                             startActivity(UserProfile);
 
                         }else{
