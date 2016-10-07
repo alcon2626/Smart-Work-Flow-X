@@ -20,10 +20,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
+        app:elevation="10dp"
         app:srcCompat="@mipmap/ic_add_circle_black_48dp"/>
 
 
-    <include layout="@layout/content_profile" />
+    <include layout="@layout/content_profile"
+        android:id="@+id/include" />
 
 
     <android.support.v7.widget.Toolbar
@@ -39,8 +41,8 @@
         android:layout_gravity="bottom"
         android:layout_marginEnd="-155dp"
         app:backgroundTint="@color/MediumSeaGreen"
-        android:visibility="visible"
-        app:elevation="6dp"
+        android:visibility="invisible"
+        app:elevation="10dp"
         app:pressedTranslationZ="12dp"
         android:src="@mipmap/ic_group_black_32dp"
         app:fabSize="mini"
@@ -55,8 +57,8 @@
         app:fabSize="mini"
         android:layout_marginEnd="@dimen/fab_margin"
         app:backgroundTint="@color/MediumSeaGreen"
-        android:visibility="visible"
-        app:elevation="16dp"
+        android:visibility="invisible"
+        app:elevation="10dp"
         app:pressedTranslationZ="20dp"
         android:src="@mipmap/ic_access_time_black_48dp"
         android:layout_marginRight="@dimen/fab_margin"/>
@@ -68,11 +70,41 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="90dp"
         android:src="@mipmap/ic_email_black_48dp"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:backgroundTint="@color/MediumSeaGreen"
         app:pressedTranslationZ="12dp"
         app:fabSize="mini"
-        app:elevation="16dp"/>
+        app:elevation="10dp"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="352dp"
+        android:layout_gravity="bottom"/>
+
+    <ImageView
+        android:layout_width="173dp"
+        android:layout_height="155dp"
+        app:srcCompat="@mipmap/genericperson"
+        android:id="@+id/Profile_Picture"
+        android:layout_marginTop="-290dp"
+        android:layout_gravity="start"/>
+
+    <ImageView
+        android:layout_width="39dp"
+        android:layout_height="40dp"
+        app:srcCompat="@drawable/clockout"
+        android:id="@+id/ClockStatus"
+        android:layout_marginTop="60dp"
+        app:layout_anchor="@+id/include"
+        app:layout_anchorGravity="top|right"
+        android:layout_gravity="bottom|start" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="136dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="169dp"
+        android:id="@+id/textView" />
 
 
 </android.support.design.widget.CoordinatorLayout>

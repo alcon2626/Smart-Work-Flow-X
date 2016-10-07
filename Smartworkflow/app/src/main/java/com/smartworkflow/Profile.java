@@ -12,6 +12,7 @@ import android.view.animation.AnimationUtils;
 
 public class Profile extends AppCompatActivity implements View.OnClickListener {
     FloatingActionButton fab, fab_1, fab_2, fab_3;
+    //fab_1 is the group/network, fab_2 is messages and fab_3 is clock.
     Animation fab_open, fab_close, rotate_forward, rotate_backward;
     private Boolean isFabOpen = false;
 
@@ -34,6 +35,8 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         fab_1.setOnClickListener(this);
         fab_2.setOnClickListener(this);
         fab_3.setOnClickListener(this);
+        //action when buttons are click bellow
+
     }
 
     @Override
