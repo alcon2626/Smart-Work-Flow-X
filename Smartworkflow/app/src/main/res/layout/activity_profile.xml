@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_marginEnd="-155dp"
+        android:layout_marginEnd="-180dp"
         app:backgroundTint="@color/MediumSeaGreen"
         android:visibility="invisible"
         app:elevation="10dp"
@@ -52,7 +52,7 @@
         android:id="@+id/fab_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="120dp"
+        android:layout_marginBottom="90dp"
         android:layout_gravity="bottom|end"
         app:fabSize="mini"
         android:layout_marginEnd="@dimen/fab_margin"
@@ -68,7 +68,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="90dp"
+        android:layout_margin="70dp"
         android:src="@mipmap/ic_email_black_48dp"
         android:visibility="invisible"
         app:backgroundTint="@color/MediumSeaGreen"
@@ -82,7 +82,7 @@
         android:layout_gravity="bottom"/>
 
     <ImageView
-        android:layout_width="173dp"
+        android:layout_width="158dp"
         android:layout_height="155dp"
         app:srcCompat="@mipmap/genericperson"
         android:id="@+id/Profile_Picture"
@@ -94,17 +94,11 @@
         android:layout_height="40dp"
         app:srcCompat="@drawable/clockout"
         android:id="@+id/ClockStatus"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="80dp"
         app:layout_anchor="@+id/include"
         app:layout_anchorGravity="top|right"
         android:layout_gravity="bottom|start" />
 
-    <TextView
-        android:text="TextView"
-        android:layout_width="136dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="169dp"
-        android:id="@+id/textView" />
 
 
 </android.support.design.widget.CoordinatorLayout>
