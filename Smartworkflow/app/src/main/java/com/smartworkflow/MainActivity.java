@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     String Email ="", Password="";
     String ClienID = "390858261168-u6ju4oioebajagm6ht4kb0v40o5dq14k.apps.googleusercontent.com";
     GoogleApiClient mGoogleApiClient;
+    String UserUID;
 
 
     @Override
@@ -225,9 +226,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         try{
             acct.getIdToken();
             Log.d("Token:", acct.getIdToken());
+            Log.d("ID:", acct.getId());
         }catch (Exception e){
             e.printStackTrace();
         }
+        final String GoogleUserID = acct.getId();
+
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         aunthenticator.signInWithCredential(credential)

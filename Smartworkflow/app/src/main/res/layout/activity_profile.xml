@@ -24,16 +24,13 @@
         app:srcCompat="@mipmap/ic_add_circle_black_48dp"/>
 
 
-    <include layout="@layout/content_profile"
-        android:id="@+id/include" />
-
-
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="@color/MediumSpringGreen"
         app:popupTheme="@style/Theme.AppCompat.Light" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_1"
         android:layout_width="wrap_content"
@@ -76,19 +73,6 @@
         app:fabSize="mini"
         app:elevation="10dp"/>
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="352dp"
-        android:layout_gravity="bottom"/>
-
-    <ImageView
-        android:layout_width="158dp"
-        android:layout_height="155dp"
-        app:srcCompat="@mipmap/genericperson"
-        android:id="@+id/Profile_Picture"
-        android:layout_marginTop="-290dp"
-        android:layout_gravity="start"/>
-
     <ImageView
         android:layout_width="39dp"
         android:layout_height="40dp"
@@ -99,6 +83,34 @@
         app:layout_anchorGravity="top|right"
         android:layout_gravity="bottom|start" />
 
+    <ImageView
+        android:layout_width="181dp"
+        android:layout_height="104dp"
+        android:layout_margin="160dp"
+        android:id="@+id/CompanyLogo"
+        android:scaleType="fitCenter"/>
+
+    <ImageView
+        android:layout_width="160dp"
+        android:layout_height="177dp"
+        android:id="@+id/Profile_Picture"
+        android:layout_marginTop="-290dp"
+        android:layout_gravity="start"/>
+
+    <TextView
+        android:text="@string/ClockStatus"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView"
+        app:layout_anchor="@id/ClockStatus"
+        app:layout_anchorGravity="start|center"
+        android:textColor="@color/SeaGreen"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+
+    <include layout="@layout/content_profile"
+        android:id="@+id/include"
+        android:visibility="visible"
+        style="@style/AppTheme" />
 
 
 </android.support.design.widget.CoordinatorLayout>
