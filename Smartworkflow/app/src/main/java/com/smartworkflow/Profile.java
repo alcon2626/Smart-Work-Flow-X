@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -47,7 +48,6 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
     private Uri picUri;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReferenceFromUrl("gs://smart-workflow-144316.appspot.com");
-    FirebaseAuth.AuthStateListener mAuthListener;
     String userID;
 
 
@@ -55,9 +55,13 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        //get extras
+        Intent intent = getIntent();
+        userID = intent.getStringExtra("USERID");
+        Log.d("UserID", userID);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+       //Animated Buttoms
         fab_1 = (FloatingActionButton) findViewById(R.id.fab_1);
         fab_2 = (FloatingActionButton) findViewById(R.id.fab_2);
         fab_3 = (FloatingActionButton) findViewById(R.id.fab_3);
@@ -75,30 +79,33 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         fab_3.setOnClickListener(this);
         //load basic info
         LoadParameters();
-        //get current user
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                     userID = user.getUid();
-                    Log.d("signed_in:", userID);
-                } else {
-                    // User is signed out
-                    Log.d("signed_out", "True");
-                }
-                // ...
-            }
-        };
-
-
         //picture selector and set
         SetProfilePicture();
         SetCompanyLogo();
         //action when buttons are click bellow
 
 
+    }
+    private Boolean exit = false;
+    @Override
+    public void onBackPressed(){
+        if (exit) {
+            Intent intent = new Intent(Profile.this, MainActivity.class);
+            //start intent
+            startActivity(intent);
+        } else {
+            FirebaseAuth.getInstance().signOut();
+            Toast.makeText(this, "Press Back again to Sing Out.",
+                    Toast.LENGTH_SHORT).show();
+            exit = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    exit = false;
+                }
+            }, 3 * 1000);
+
+        }
     }
 
     private void SetProfilePicture() {
@@ -241,6 +248,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                     Bitmap selectedBitmap = extras.getParcelable("data");
                     //set the image
                     CompanyLogo.setImageBitmap(selectedBitmap);
+                    SaveCompanyLogo(selectedBitmap);
                 }
 
                 break;
@@ -306,6 +314,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
 
     //load images etc
     public void LoadParameters() {
+        //loading image from database for profile
             StorageReference UserImageProfileReference = storageRef.child("users/" + userID + "/ProfilePhoto.jpeg");
             final long ONE_MEGABYTE = 1024 * 1024;
             UserImageProfileReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -322,17 +331,57 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                     ProfilePicture.setImageDrawable(getResources().getDrawable(R.drawable.genericperson));
                 }
             });
+        //loading image from database for company logo
+        StorageReference CompanyLogoReference = storageRef.child("users/" + userID + "/CompanyLogo.jpeg");
+        CompanyLogoReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                // Data for "images/island.jpg" is returns, use this as needed
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                CompanyLogo.setImageBitmap(bitmap);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                //get image from local
+                CompanyLogo.setImageDrawable(getResources().getDrawable(R.drawable.genericlogo));
+            }
+        });
     }
 
 
-    //save images
+    //save profile picture
     public void SaveImageProfile(Bitmap bitmap){
+        //Saving Image for Profile to database
         StorageReference UserImageProfileReference = storageRef.child("users/"+userID+"/ProfilePhoto.jpeg");
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         assert bitmap != null;
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
         UploadTask uploadTask = UserImageProfileReference.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+            }
+        });
+    }
+
+    //save Company Logo
+    public void SaveCompanyLogo(Bitmap bitmap){
+        //Saving Image for Profile to database
+        StorageReference CompanyLogoReference = storageRef.child("users/"+userID+"/CompanyLogo.jpeg");
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        assert bitmap != null;
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+        UploadTask uploadTask = CompanyLogoReference.putBytes(data);
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {

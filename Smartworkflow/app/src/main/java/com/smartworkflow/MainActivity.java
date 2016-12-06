@@ -37,6 +37,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     String ClienID = "390858261168-u6ju4oioebajagm6ht4kb0v40o5dq14k.apps.googleusercontent.com";
     GoogleApiClient mGoogleApiClient;
     String UserUID;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
 
     @Override
@@ -83,6 +85,27 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+        //user sign in listener
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d("onAuth:signed_in:", user.getUid());
+                    String ID = String.valueOf(user.getUid());
+                    Intent UserProfile = new Intent(MainActivity.this, Profile.class);
+                    UserProfile.putExtra("USERID", ID);
+                    startActivity(UserProfile);
+                    UserEmail.setText("");
+                    Userpassword.setText("");
+                } else {
+                    // User is signed out
+                    Log.d("onAuth:signed_out", "TRUE");
+                }
+                // ...
+            }
+        };
 
         findViewById(R.id.imageButtonGoogleSignIn).setOnClickListener(this);
     }
@@ -90,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     protected void onStart() {
         super.onStart();
+        aunthenticator.addAuthStateListener(mAuthListener);
         Register_User = (TextView) findViewById(R.id.NewUser);
         UserSignIn = (ImageButton) findViewById(R.id.imageButtonSignIn);
         GooglesignIn=(ImageButton)findViewById(R.id.imageButtonGoogleSignIn);
@@ -143,10 +167,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    Intent UserProfile = new Intent(MainActivity.this, Profile.class);
-                                    startActivity(UserProfile);
-                                    UserEmail.setText("");
-                                    Userpassword.setText("");
+                                    //say something
+                                    Log.d("Sign_IN_Email:", "TRUE");
                                 }else{
                                     task.addOnFailureListener(new OnFailureListener() {
                                         @Override
@@ -161,6 +183,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             }
         });
     }
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            aunthenticator.removeAuthStateListener(mAuthListener);
+        }
+    }
+
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
@@ -243,8 +273,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
-                        Intent UserProfile = new Intent(MainActivity.this, Profile.class);
-                        startActivity(UserProfile);
                         UserEmail.setText("");
                         Userpassword.setText("");
                         if (!task.isSuccessful()) {
