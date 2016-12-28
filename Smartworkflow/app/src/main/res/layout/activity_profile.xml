@@ -84,20 +84,6 @@
         app:layout_anchorGravity="top|right"
         android:layout_gravity="bottom|start" />
 
-    <ImageView
-        android:layout_width="181dp"
-        android:layout_height="104dp"
-        android:layout_margin="160dp"
-        android:id="@+id/CompanyLogo"
-        android:scaleType="fitCenter"/>
-
-    <ImageView
-        android:layout_width="160dp"
-        android:layout_height="177dp"
-        android:id="@+id/Profile_Picture"
-        android:layout_marginTop="-290dp"
-        android:layout_gravity="start"/>
-
     <TextView
         android:text="@string/ClockStatus"
         android:layout_width="160dp"
@@ -114,15 +100,32 @@
         style="@style/AppTheme" />
 
     <Button
-        android:layout_width="46dp"
-        android:layout_height="56dp"
+        android:layout_width="27dp"
+        android:layout_height="25dp"
         android:id="@+id/EditProfileButtom"
-        app:layout_anchor="@+id/include"
-        app:layout_anchorGravity="top|right"
-        android:layout_gravity="bottom|center_horizontal"
-        android:background="@drawable/ic_more_vert_black_24dp"
-        android:visibility="visible"
-        android:elevation="4dp" />
+        app:layout_anchor="@+id/toolbar"
+        app:layout_anchorGravity="end|center"
+        android:background="@drawable/ic_build_black_24dp"
+        android:visibility="visible"/>
+
+    <ImageView
+        android:layout_width="160dp"
+        android:layout_height="166dp"
+        android:id="@+id/Profile_Picture"
+        android:layout_marginTop="-290dp"
+        android:layout_gravity="start"
+        android:cropToPadding="false"
+        android:adjustViewBounds="false"
+        android:scaleType="fitXY" />
+
+    <ImageView
+        android:layout_width="163dp"
+        android:layout_height="59dp"
+        android:layout_gravity="center|start"
+        android:id="@+id/CompanyLogo"
+        android:cropToPadding="false"
+        android:adjustViewBounds="false"
+        android:scaleType="fitXY" />
 
 
 </android.support.design.widget.CoordinatorLayout>

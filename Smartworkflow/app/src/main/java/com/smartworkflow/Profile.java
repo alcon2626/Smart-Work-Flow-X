@@ -131,10 +131,10 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                                 //crop before setting the image
                                 try {
                                     pickPhoto.putExtra("crop", "true");
-                                    pickPhoto.putExtra("aspectX", 0.8);
-                                    pickPhoto.putExtra("aspectY", 1.5);
-                                    pickPhoto.putExtra("outputX", 160);
-                                    pickPhoto.putExtra("outputY", 177);
+                                    pickPhoto.putExtra("aspectX", 1);
+                                    pickPhoto.putExtra("aspectY", 1);
+                                    pickPhoto.putExtra("outputX", 1920);
+                                    pickPhoto.putExtra("outputY", 1080);
                                     pickPhoto.putExtra("return-data", "true");
                                     startActivityForResult(pickPhoto, 1);//one can be replaced with any action code
                                 } catch (Exception e) {
@@ -145,7 +145,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                                 }
                             }
                         })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setIcon(android.R.drawable.gallery_thumb)
                         .show();
             }
         });
@@ -267,11 +267,11 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
             // set crop properties
             cropIntent.putExtra("crop", "true");
             // indicate aspect of desired crop
-            cropIntent.putExtra("aspectX", 0.8);
-            cropIntent.putExtra("aspectY", 1.5);
+            cropIntent.putExtra("aspectX", 1);
+            cropIntent.putExtra("aspectY", 1);
             // indicate output X and Y
-            cropIntent.putExtra("outputX", 160);
-            cropIntent.putExtra("outputY", 177);
+            cropIntent.putExtra("outputX", 1920);
+            cropIntent.putExtra("outputY", 1080);
             // retrieve data on return
             cropIntent.putExtra("return-data", true);
             // start the activity - we handle returning in onActivityResult
@@ -296,8 +296,8 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                 //crop before setting the image
                 try {
                     pickPhoto.putExtra("crop", "true");
-                    pickPhoto.putExtra("aspectX", 1.5);
-                    pickPhoto.putExtra("aspectY", 0.5);
+                    pickPhoto.putExtra("aspectX", 1);
+                    pickPhoto.putExtra("aspectY", 1);
                     pickPhoto.putExtra("outputX", 160);
                     pickPhoto.putExtra("outputY", 70);
                     pickPhoto.putExtra("return-data", "true");
