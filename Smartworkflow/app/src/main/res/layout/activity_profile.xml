@@ -75,11 +75,11 @@
         app:elevation="10dp"/>
 
     <ImageView
-        android:layout_width="39dp"
-        android:layout_height="40dp"
+        android:layout_width="43dp"
+        android:layout_height="47dp"
         app:srcCompat="@drawable/clockout"
         android:id="@+id/ClockStatus"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="100dp"
         app:layout_anchor="@+id/include"
         app:layout_anchorGravity="top|right"
         android:layout_gravity="bottom|start" />
@@ -88,7 +88,7 @@
         android:text="@string/ClockStatus"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
-        android:id="@+id/textView"
+        android:id="@+id/ClockStatusProfileTextView"
         app:layout_anchor="@id/ClockStatus"
         app:layout_anchorGravity="start|center"
         android:textColor="@color/SeaGreen"
@@ -110,22 +110,51 @@
 
     <ImageView
         android:layout_width="160dp"
+        android:layout_height="59dp"
+        android:layout_gravity="center|start"
+        android:id="@+id/CompanyLogo"
+        android:adjustViewBounds="false"
+        android:scaleType="fitXY"
+        android:cropToPadding="true" />
+
+    <ImageView
+        android:layout_width="160dp"
         android:layout_height="166dp"
         android:id="@+id/Profile_Picture"
         android:layout_marginTop="-290dp"
         android:layout_gravity="start"
-        android:cropToPadding="false"
         android:adjustViewBounds="false"
+        android:cropToPadding="true"
         android:scaleType="fitXY" />
 
-    <ImageView
-        android:layout_width="163dp"
-        android:layout_height="59dp"
-        android:layout_gravity="center|start"
-        android:id="@+id/CompanyLogo"
-        android:cropToPadding="false"
-        android:adjustViewBounds="false"
-        android:scaleType="fitXY" />
+    <TextView
+        android:text="@string/Company_Logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/CompanyLogoText"
+        app:layout_anchor="@+id/CompanyLogo"
+        app:layout_anchorGravity="start"
+        android:layout_gravity="top|center_horizontal"
+        android:textColor="@color/SeaGreen"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button"/>
+
+    <TextView
+        android:text="@string/Username"
+        android:layout_width="160dp"
+        android:layout_height="26dp"
+        android:id="@+id/UserNameProfile"
+        app:layout_anchor="@id/ClockStatus"
+        app:layout_anchorGravity="bottom"
+        android:textAppearance="@style/TextAppearance.AppCompat" />
+
+    <TextView
+        android:text="@string/LastName"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/LastNameProfile"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        app:layout_anchor="@id/UserNameProfile"
+        app:layout_anchorGravity="bottom|end|bottom"/>
 
 
 </android.support.design.widget.CoordinatorLayout>
