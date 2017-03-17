@@ -1,17 +1,14 @@
 package com.smartworkflow;
 
-import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
-import android.os.Handler;
-import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.os.Handler;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -24,7 +21,6 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -47,10 +43,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     FirebaseAuth aunthenticator;
     EditText UserEmail;
     EditText Userpassword;
+    String DisplayName;
     String Email ="", Password="";
     String ClienID = "390858261168-u6ju4oioebajagm6ht4kb0v40o5dq14k.apps.googleusercontent.com";
     GoogleApiClient mGoogleApiClient;
-    String UserUID;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
 
@@ -92,10 +88,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
-                    Log.d("onAuth:signed_in:", user.getUid());
+                    Log.d("MainDisplayNamen:", user.getDisplayName());
+                    DisplayName = user.getDisplayName();
+                    Log.d("MainUserIDn:", user.getUid());
                     String ID = String.valueOf(user.getUid());
-                    Intent UserProfile = new Intent(MainActivity.this, Profile.class);
+                    Intent UserProfile = new Intent(MainActivity.this, UserProfile.class);
                     UserProfile.putExtra("USERID", ID);
+                    UserProfile.putExtra("USERNAME", DisplayName);
                     startActivity(UserProfile);
                     UserEmail.setText("");
                     Userpassword.setText("");
@@ -132,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
             }
         });
-        //sign in
+        //sign in from user button not google
         UserSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
                     @Override
                     public void onAuthenticated(AuthData authData) {
-                        Intent UserProfile = new Intent(MainActivity.this, Profile.class);
+                        Intent UserProfile = new Intent(MainActivity.this, UserProfile.class);
                         startActivity(UserProfile);
                     }
 
@@ -257,10 +256,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             acct.getIdToken();
             Log.d("Token:", acct.getIdToken());
             Log.d("ID:", acct.getId());
+            Log.d("ID:", acct.getDisplayName());
+            DisplayName = acct.getDisplayName();
         }catch (Exception e){
             e.printStackTrace();
         }
-        final String GoogleUserID = acct.getId();
 
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);

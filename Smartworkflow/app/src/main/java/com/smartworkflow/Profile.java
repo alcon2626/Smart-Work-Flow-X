@@ -1,23 +1,15 @@
 package com.smartworkflow;
 
-import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityCompat.OnRequestPermissionsResultCallback;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -25,14 +17,14 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -48,7 +40,9 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
     private Uri picUri;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReferenceFromUrl("gs://smart-workflow-144316.appspot.com");
-    String userID;
+    String userID, First_Name, Last_Name;
+    TextView UserFirstName, UserLastName;
+    Button EditProfile;
 
 
     @Override
@@ -72,17 +66,29 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward);
         ProfilePicture = (ImageView) findViewById(R.id.Profile_Picture);
         CompanyLogo = (ImageView) findViewById(R.id.CompanyLogo);
+        EditProfile = (Button) findViewById(R.id.EditProfileButtom);
         //listeners
         fab.setOnClickListener(this);
         fab_1.setOnClickListener(this);
         fab_2.setOnClickListener(this);
         fab_3.setOnClickListener(this);
-        //load basic info
+        //textviews
+        UserFirstName = (TextView) findViewById(R.id.UserNameProfile);
+        UserLastName = (TextView) findViewById(R.id.LastNameProfile);
+        //load basic info get username and lastname from Database
         LoadParameters();
         //picture selector and set
         SetProfilePicture();
         SetCompanyLogo();
         //action when buttons are click bellow
+        EditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Intent SettingProfile = new Intent(Profile.this, ProfileV1.class);
+                //startActivity(SettingProfile);
+            }
+        });
+
 
 
     }
