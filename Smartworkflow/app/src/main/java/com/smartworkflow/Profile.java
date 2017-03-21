@@ -77,7 +77,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         UserLastName = (TextView) findViewById(R.id.LastNameProfile);
         //load basic info get username and lastname from Database
         LoadParameters();
-        //picture selector and set
+        //storageManagement selector and set
         SetProfilePicture();
         SetCompanyLogo();
         //action when buttons are click bellow
@@ -356,7 +356,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
     }
 
 
-    //save profile picture
+    //save profile storageManagement
     public void SaveImageProfile(Bitmap bitmap){
         //Saving Image for Profile to database
         StorageReference UserImageProfileReference = storageRef.child("users/"+userID+"/ProfilePhoto.jpeg");

@@ -20,8 +20,9 @@ import java.io.ByteArrayOutputStream;
  * Created by LeoAizen on 3/16/2017.
  */
 
-public class ProfilePicture {
-    Bitmap bitmap;
+public class Storage_Management {
+    public Bitmap UserPictureFromDB; // to store the image
+    public boolean Download_finish; //to check if it finish the download
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference storageRef = storage.getReferenceFromUrl("gs://smart-workflow-144316.appspot.com");
 
@@ -46,9 +47,9 @@ public class ProfilePicture {
             }
         });
     }
-    //change the return to the PassImage and change the name
-    public Bitmap GetPicture (String UserID){
-
+    //Retrieve the image and the we GEt it.
+    public void RetrievePicture(String UserID){
+        Download_finish = false;
         //loading image from database for profile
         final StorageReference[] UserImageProfileReference = {storageRef.child("users/" + UserID + "/ProfilePhoto.jpeg")};
         final long ONE_MEGABYTE = 1024 * 1024;
@@ -56,9 +57,14 @@ public class ProfilePicture {
             @Override
             public void onSuccess(byte[] bytes) {
                 // Data for "images/island.jpg" is returns, use this as needed
-                Bitmap bitmapDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                PassImage(bitmapDB);
-                //set it
+                UserPictureFromDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                //check if empty
+                if (UserPictureFromDB == null){
+                    Log.d("Bitmap Empty:", "True");
+                }else{
+                    Log.d("Bitmap Empty:", "False");
+                    Download_finish = true;
+                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -67,16 +73,6 @@ public class ProfilePicture {
 
             }
         });
-        //check if empty
-        if (bitmap == null){
-            Log.d("BitmapDb Empty:", "True");
-        }else{
-            Log.d("BitmapDb Empty:", "False");
-        }
-        return bitmap;
-    }
-    private void PassImage(Bitmap image){
-        bitmap = image;
     }
 
 }

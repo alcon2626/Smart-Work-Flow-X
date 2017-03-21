@@ -2,8 +2,6 @@ package com.smartworkflow;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,14 +26,28 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 public class UserProfile extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    /*Map
+    * onCreate()
+    * onBackPressed()
+    * boolean onCreateOptionsMenu()
+    * boolean onOptionsItemSelected()
+    * boolean onNavigationItemSelected()
+    * onActivityResult()
+    * */
     //variables and objects
+    Long TimefromDB;
     String userID, UserDisplayName;
     TextView UserName;
     Chronometer ProfileChrono;
     ImageView Profile_Image;
-    ProfilePicture picture = new ProfilePicture();
+    Storage_Management storageManagement = new Storage_Management();// handle picture
+    DB_Managment dbmanager = new DB_Managment(); // handle data
     boolean isChronometerRunning = false;
     long timeWhenStopped = 0;
     @Override
@@ -50,7 +63,7 @@ public class UserProfile extends AppCompatActivity
         //toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //as it says below floating button
+        //as it says below floating button, when pressed it starts or stops the Chrono
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
@@ -58,18 +71,36 @@ public class UserProfile extends AppCompatActivity
             public void onClick(View view) {
                 if (!isChronometerRunning)  // condition on which you check whether it's start or stop
                 {
-                    ProfileChrono.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
+                    ProfileChrono.start();
+                    Log.d("Clock", "IN");
+                    dbmanager.GetTime(userID);
+                    /*I have to wait for it to get time so I decided to check every second until it finishes the retrieve*/
+                    final ScheduledExecutorService scheduler =
+                            Executors.newSingleThreadScheduledExecutor();
+                    scheduler.scheduleAtFixedRate
+                            (new Runnable() {
+                                public void run() {
+                                    // Do something here on the main thread
+                                    if (dbmanager.DownloadFinish){
+                                        TimefromDB = dbmanager.Time;
+                                        ProfileChrono.setBase(SystemClock.elapsedRealtime() + TimefromDB);
+                                        Log.d("Time from DB", TimefromDB.toString());
+                                        ProfileChrono.start();
+                                        scheduler.shutdown();
+                                    }
+                                }
+                            }, 0, 1, TimeUnit.SECONDS); // or .MINUTES, .HOURS etc.
                     ProfileChrono.start();
                     isChronometerRunning  = true;
                 }
                 else
                 {
-                    timeWhenStopped = ProfileChrono.getBase() - SystemClock.elapsedRealtime();
+                    Log.d("Clock", "Out");
                     ProfileChrono.stop();
+                    timeWhenStopped = ProfileChrono.getBase() - SystemClock.elapsedRealtime();
+                    dbmanager.SaveTime(userID, timeWhenStopped);
                     isChronometerRunning  = false;
                 }
-                /*Snackbar.make(view, "I need to clock in and out here", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
             }
         });
 
@@ -89,16 +120,26 @@ public class UserProfile extends AppCompatActivity
         Profile_Image = (ImageView)header.findViewById(R.id.UserProfileImage);
         UserName.setText(UserDisplayName);
         //loading image from database for profile
-        try{
-            Bitmap bitmapFromDB = picture.GetPicture(userID);
-            if (bitmapFromDB == null){
-                Toast.makeText(this, "Picture from DB is null",
-                        Toast.LENGTH_SHORT).show();
-            }
-        }catch (Exception e){
-            Profile_Image.setImageResource(R.drawable.genericperson);
-            e.printStackTrace();
-        }
+        Profile_Image.setImageResource(R.drawable.genericperson);
+        storageManagement.RetrievePicture(userID);
+        /*I have to wait for it to download so I decided to check every second until it finishes the retrieve
+        Create a schedule timer to check if picture finish downloading every second and once it does set it as profile picture*/
+        final ScheduledExecutorService scheduler =
+                Executors.newSingleThreadScheduledExecutor();
+
+        scheduler.scheduleAtFixedRate
+                (new Runnable() {
+                    public void run() {
+                        // call
+                        Log.d("Second", "+1");
+                        // Do something here on the main thread
+                        if (storageManagement.Download_finish){
+                            Log.d("Download ended", "true");
+                            Profile_Image.setImageBitmap(storageManagement.UserPictureFromDB);
+                            scheduler.shutdown();
+                        }
+                    }
+                }, 0, 1, TimeUnit.SECONDS); // or .MINUTES, .HOURS etc.
     }
     //ask first exit second time pressed
     private Boolean exit = false;
@@ -127,21 +168,6 @@ public class UserProfile extends AppCompatActivity
 
             }
         }
-            /*super.onBackPressed();
-            new AlertDialog.Builder(this)
-                    .setTitle("Really Exit?")
-                    .setMessage("Are you sure you want to exit?")
-                    .setNegativeButton(android.R.string.no, null)
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            FirebaseAuth.getInstance().signOut();
-                            Intent intent = new Intent(UserProfile.this, MainActivity.class);
-                            //start intent
-                            startActivity(intent);
-                        }
-                    }).create().show();
-            }*/
     }
 
     @Override
@@ -173,8 +199,7 @@ public class UserProfile extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
-            // continue with Camera
+            // Handle the camera action continue with Camera
             Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             //sent the data to activity result, i have the user crop down there.
             startActivityForResult(takePicture, 0);//zero can be replaced with any action code
@@ -238,7 +263,7 @@ public class UserProfile extends AppCompatActivity
                             public void run() {
                                 //TODO your background code
                                 try{
-                                    picture.SavePicture(CameraPicture, userID);
+                                    storageManagement.SavePicture(CameraPicture, userID);
                                 }catch (Exception e){
                                     e.printStackTrace();
                                 }
@@ -246,7 +271,7 @@ public class UserProfile extends AppCompatActivity
                         });
                     }else{
                         try{
-                            picture.SavePicture(CameraPicture, userID);
+                            storageManagement.SavePicture(CameraPicture, userID);
                         }catch (Exception e){
                             e.printStackTrace();
                         }
@@ -274,7 +299,7 @@ public class UserProfile extends AppCompatActivity
                             public void run() {
                                 //TODO your background code
                                 try{
-                                    picture.SavePicture(selectedBitmap, userID);
+                                    storageManagement.SavePicture(selectedBitmap, userID);
                                 }catch (Exception e){
                                     e.printStackTrace();
                                 }
@@ -282,7 +307,7 @@ public class UserProfile extends AppCompatActivity
                         });
                     }else{
                         try{
-                            picture.SavePicture(selectedBitmap, userID);
+                            storageManagement.SavePicture(selectedBitmap, userID);
                         }catch (Exception e){
                             e.printStackTrace();
                         }
