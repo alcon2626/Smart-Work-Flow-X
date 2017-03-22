@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     GoogleApiClient mGoogleApiClient;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -66,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .setGender(AdRequest.GENDER_MALE)
                 .build();
         AdView mAdView = (AdView) findViewById(R.id.adView);
+        assert mAdView != null;
         mAdView.loadAd(request);
         //init user authenticator
         aunthenticator = FirebaseAuth.getInstance();

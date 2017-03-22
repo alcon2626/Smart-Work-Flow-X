@@ -11,9 +11,9 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/UpdateFromGallery" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:id="@+id/nav_resetclock"
+            android:icon="@mipmap/ic_timer_black_48dp"
+            android:title="Reset Clock" />
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"

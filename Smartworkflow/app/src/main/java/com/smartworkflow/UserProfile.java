@@ -1,5 +1,6 @@
 package com.smartworkflow;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -26,6 +27,8 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -34,17 +37,19 @@ public class UserProfile extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     /*Map
     * onCreate()
+    * TimeisObtained()
     * onBackPressed()
     * boolean onCreateOptionsMenu()
     * boolean onOptionsItemSelected()
     * boolean onNavigationItemSelected()
     * onActivityResult()
     * runThread()
+    * UpdateDayValues()
     * */
     //variables and objects
     Long TimefromDB;
     String userID, UserDisplayName;
-    TextView UserName;
+    public static TextView UserName, DayMonday, DayTuesday, DayWednesday, DayThursday, DayFriday, DaySaturday, DaySunday;
     Chronometer ProfileChrono;
     ImageView Profile_Image;
     Storage_Management storageManagement = new Storage_Management();// handle picture
@@ -55,10 +60,32 @@ public class UserProfile extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
+        //two seconds to load information
+        final ProgressDialog pd = new ProgressDialog(UserProfile.this);
+        pd.setTitle("Loading...");
+        pd.setMessage("Please wait.");
+        pd.show();
+
+        long delayInMillis = 2000;
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                pd.dismiss();
+            }
+        }, delayInMillis);
         //get extras
         Intent intent = getIntent();
         userID = intent.getStringExtra("USERID");
         UserDisplayName = intent.getStringExtra("USERNAME");
+        //days of week values from textView
+        DayMonday = (TextView) findViewById(R.id.textViewMondayValue);
+        DayTuesday = (TextView) findViewById(R.id.textViewTuesdayValue);
+        DayWednesday = (TextView) findViewById(R.id.textViewWednesdayValue);
+        DayThursday = (TextView) findViewById(R.id.textViewThursdayValue);
+        DayFriday = (TextView) findViewById(R.id.textViewFridayValue);
+        DaySaturday = (TextView) findViewById(R.id.textViewSaturdayValue);
+        DaySunday = (TextView) findViewById(R.id.textViewSundayValue);
         //Chrono creation
         ProfileChrono = (Chronometer) findViewById(R.id.chronometer1);
         dbmanager.GetTime(userID);
@@ -118,8 +145,6 @@ public class UserProfile extends AppCompatActivity
         scheduler.scheduleAtFixedRate
                 (new Runnable() {
                     public void run() {
-                        // call
-                        Log.d("Second", "+1");
                         // Do something here on the main thread
                         if (storageManagement.Download_finish){
                             Log.d("Download ended", "true");
@@ -230,7 +255,13 @@ public class UserProfile extends AppCompatActivity
                 Toast toast = Toast.makeText(UserProfile.this, errorMessage, Toast.LENGTH_SHORT);
                 toast.show();
             }
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_resetclock) {
+            //reset time to 0 and start the Chronometer
+            //also delete the time value on DB
+            dbmanager.DeleteTime(userID);
+            ProfileChrono.setBase(SystemClock.elapsedRealtime());
+            ProfileChrono.start();
+            isChronometerRunning  = true;
 
         } else if (id == R.id.nav_manage) {
 
@@ -324,4 +355,5 @@ public class UserProfile extends AppCompatActivity
                 break;
         }
     }
+
 }
