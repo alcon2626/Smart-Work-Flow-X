@@ -35,7 +35,13 @@ public class DB_Managment {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 Time = dataSnapshot.getValue(Long.class);
-                DownloadFinish = true;
+                //check if empty
+                if (Time == null){
+                    Log.d("Time Empty:", "True");
+                }else{
+                    Log.d("Time Empty:", "False");
+                    DownloadFinish = true;
+                }
             }
 
             @Override

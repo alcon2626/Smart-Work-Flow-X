@@ -39,6 +39,7 @@ public class UserProfile extends AppCompatActivity
     * boolean onOptionsItemSelected()
     * boolean onNavigationItemSelected()
     * onActivityResult()
+    * runThread()
     * */
     //variables and objects
     Long TimefromDB;
@@ -60,6 +61,8 @@ public class UserProfile extends AppCompatActivity
         UserDisplayName = intent.getStringExtra("USERNAME");
         //Chrono creation
         ProfileChrono = (Chronometer) findViewById(R.id.chronometer1);
+        dbmanager.GetTime(userID);
+        TimeisObtained();
         //toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -72,24 +75,9 @@ public class UserProfile extends AppCompatActivity
                 if (!isChronometerRunning)  // condition on which you check whether it's start or stop
                 {
                     ProfileChrono.start();
-                    Log.d("Clock", "IN");
                     dbmanager.GetTime(userID);
-                    /*I have to wait for it to get time so I decided to check every second until it finishes the retrieve*/
-                    final ScheduledExecutorService scheduler =
-                            Executors.newSingleThreadScheduledExecutor();
-                    scheduler.scheduleAtFixedRate
-                            (new Runnable() {
-                                public void run() {
-                                    // Do something here on the main thread
-                                    if (dbmanager.DownloadFinish){
-                                        TimefromDB = dbmanager.Time;
-                                        ProfileChrono.setBase(SystemClock.elapsedRealtime() + TimefromDB);
-                                        Log.d("Time from DB", TimefromDB.toString());
-                                        ProfileChrono.start();
-                                        scheduler.shutdown();
-                                    }
-                                }
-                            }, 0, 1, TimeUnit.SECONDS); // or .MINUTES, .HOURS etc.
+                    Log.d("Clock", "IN");
+                    TimeisObtained();
                     ProfileChrono.start();
                     isChronometerRunning  = true;
                 }
@@ -141,6 +129,26 @@ public class UserProfile extends AppCompatActivity
                     }
                 }, 0, 1, TimeUnit.SECONDS); // or .MINUTES, .HOURS etc.
     }
+
+    private void TimeisObtained() {
+        final Long elapsedtime = SystemClock.elapsedRealtime();
+        /*I have to wait for it to get time so I decided to check every second until it finishes the retrieve*/
+        final ScheduledExecutorService scheduler =
+                Executors.newSingleThreadScheduledExecutor();
+        scheduler.scheduleAtFixedRate
+                (new Runnable() {
+                    public void run() {
+                        // Do something here on the main thread
+                        if (dbmanager.DownloadFinish){
+                            TimefromDB = dbmanager.Time;
+                            ProfileChrono.setBase(elapsedtime + TimefromDB);
+                            ProfileChrono.refreshDrawableState();
+                            scheduler.shutdown();
+                        }
+                    }
+                }, 0, 1, TimeUnit.SECONDS); // or .MINUTES, .HOURS etc.
+    }
+
     //ask first exit second time pressed
     private Boolean exit = false;
     @Override
