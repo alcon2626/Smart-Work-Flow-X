@@ -1,5 +1,6 @@
 package com.smartworkflow;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
@@ -20,7 +21,7 @@ import java.io.ByteArrayOutputStream;
  * Created by LeoAizen on 3/16/2017.
  */
 
-public class Storage_Management {
+public class Storage_Management extends Activity {
     public Bitmap UserPictureFromDB; // to store the image
     public boolean Download_finish; //to check if it finish the download
     private FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -47,7 +48,7 @@ public class Storage_Management {
             }
         });
     }
-    //Retrieve the image and the we GEt it.
+    //Retrieve the image and the we Set it.
     public void RetrievePicture(String UserID){
         Download_finish = false;
         //loading image from database for profile
@@ -63,6 +64,7 @@ public class Storage_Management {
                     Log.d("Bitmap Empty:", "True");
                 }else{
                     Log.d("Bitmap Empty:", "False");
+                    UserProfile.Profile_Image.setImageBitmap(UserPictureFromDB);
                     Download_finish = true;
                 }
             }

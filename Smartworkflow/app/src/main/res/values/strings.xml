@@ -31,7 +31,7 @@
     <string name="Friday">Friday</string>
     <string name="Saturday">Saturday</string>
     <string name="Sunday">Sunday</string>
-    <string name="Time00">00:00</string>
+    <string name="Time00">00:00:00</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

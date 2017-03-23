@@ -21,12 +21,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Chronometer;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
@@ -50,8 +53,12 @@ public class UserProfile extends AppCompatActivity
     Long TimefromDB;
     String userID, UserDisplayName;
     public static TextView UserName, DayMonday, DayTuesday, DayWednesday, DayThursday, DayFriday, DaySaturday, DaySunday;
-    Chronometer ProfileChrono;
-    ImageView Profile_Image;
+    public static Chronometer ProfileChrono;
+    public static ImageView Profile_Image;
+    ImageButton ClockStatus;
+    History history = new History();
+    Date date = new Date();
+    Calendar cal = Calendar.getInstance();
     Storage_Management storageManagement = new Storage_Management();// handle picture
     DB_Managment dbmanager = new DB_Managment(); // handle data
     boolean isChronometerRunning = false;
@@ -74,9 +81,17 @@ public class UserProfile extends AppCompatActivity
                 pd.dismiss();
             }
         }, delayInMillis);
+        //time
+        int ToDay;
+        cal.setTime(date);
+        final int weekOfYear = cal.get(Calendar.WEEK_OF_YEAR);
+        ToDay = date.getDay()-1;
+        final String Day = history.DaysOfWeek[ToDay];
         //get extras
         Intent intent = getIntent();
         userID = intent.getStringExtra("USERID");
+        dbmanager.PopulateDaysAtGlance(userID, weekOfYear); //loads time ASAP for Days
+        dbmanager.GetTime(userID, weekOfYear, Day);//loads time ASAP
         UserDisplayName = intent.getStringExtra("USERNAME");
         //days of week values from textView
         DayMonday = (TextView) findViewById(R.id.textViewMondayValue);
@@ -88,8 +103,8 @@ public class UserProfile extends AppCompatActivity
         DaySunday = (TextView) findViewById(R.id.textViewSundayValue);
         //Chrono creation
         ProfileChrono = (Chronometer) findViewById(R.id.chronometer1);
-        dbmanager.GetTime(userID);
-        TimeisObtained();
+        //clock status init
+        ClockStatus = (ImageButton) findViewById(R.id.imageButtonClockStatus);
         //toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -101,19 +116,20 @@ public class UserProfile extends AppCompatActivity
             public void onClick(View view) {
                 if (!isChronometerRunning)  // condition on which you check whether it's start or stop
                 {
+                    dbmanager.GetTime(userID, weekOfYear, Day);
+                    Log.d("Clock ", "IN");
                     ProfileChrono.start();
-                    dbmanager.GetTime(userID);
-                    Log.d("Clock", "IN");
-                    TimeisObtained();
-                    ProfileChrono.start();
+                    ClockStatus.setImageResource(R.drawable.clockin);
                     isChronometerRunning  = true;
                 }
                 else
                 {
-                    Log.d("Clock", "Out");
                     ProfileChrono.stop();
-                    timeWhenStopped = ProfileChrono.getBase() - SystemClock.elapsedRealtime();
-                    dbmanager.SaveTime(userID, timeWhenStopped);
+                    final Long timeWhenStopped = UserProfile.ProfileChrono.getBase() - SystemClock.elapsedRealtime();
+                    Log.d("Time when Stopped", String.valueOf(timeWhenStopped));
+                    dbmanager.SaveTime(userID, timeWhenStopped, weekOfYear, Day);
+                    ClockStatus.setImageResource(R.drawable.clockout);
+                    dbmanager.PopulateDaysAtGlance(userID, weekOfYear); //loads time ASAP for Days
                     isChronometerRunning  = false;
                 }
             }
@@ -137,41 +153,6 @@ public class UserProfile extends AppCompatActivity
         //loading image from database for profile
         Profile_Image.setImageResource(R.drawable.genericperson);
         storageManagement.RetrievePicture(userID);
-        /*I have to wait for it to download so I decided to check every second until it finishes the retrieve
-        Create a schedule timer to check if picture finish downloading every second and once it does set it as profile picture*/
-        final ScheduledExecutorService scheduler =
-                Executors.newSingleThreadScheduledExecutor();
-
-        scheduler.scheduleAtFixedRate
-                (new Runnable() {
-                    public void run() {
-                        // Do something here on the main thread
-                        if (storageManagement.Download_finish){
-                            Log.d("Download ended", "true");
-                            Profile_Image.setImageBitmap(storageManagement.UserPictureFromDB);
-                            scheduler.shutdown();
-                        }
-                    }
-                }, 0, 1, TimeUnit.SECONDS); // or .MINUTES, .HOURS etc.
-    }
-
-    private void TimeisObtained() {
-        final Long elapsedtime = SystemClock.elapsedRealtime();
-        /*I have to wait for it to get time so I decided to check every second until it finishes the retrieve*/
-        final ScheduledExecutorService scheduler =
-                Executors.newSingleThreadScheduledExecutor();
-        scheduler.scheduleAtFixedRate
-                (new Runnable() {
-                    public void run() {
-                        // Do something here on the main thread
-                        if (dbmanager.DownloadFinish){
-                            TimefromDB = dbmanager.Time;
-                            ProfileChrono.setBase(elapsedtime + TimefromDB);
-                            ProfileChrono.refreshDrawableState();
-                            scheduler.shutdown();
-                        }
-                    }
-                }, 0, 1, TimeUnit.SECONDS); // or .MINUTES, .HOURS etc.
     }
 
     //ask first exit second time pressed
@@ -228,6 +209,9 @@ public class UserProfile extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        final int weekOfYear = cal.get(Calendar.WEEK_OF_YEAR);
+        int ToDay = date.getDay()-1;
+        final String Day = history.DaysOfWeek[ToDay];
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -258,9 +242,10 @@ public class UserProfile extends AppCompatActivity
         } else if (id == R.id.nav_resetclock) {
             //reset time to 0 and start the Chronometer
             //also delete the time value on DB
-            dbmanager.DeleteTime(userID);
+            dbmanager.DeleteTime(userID, weekOfYear, Day);
             ProfileChrono.setBase(SystemClock.elapsedRealtime());
             ProfileChrono.start();
+            ClockStatus.setImageResource(R.drawable.clockin);
             isChronometerRunning  = true;
 
         } else if (id == R.id.nav_manage) {

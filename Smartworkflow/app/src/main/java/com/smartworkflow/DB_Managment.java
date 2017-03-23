@@ -1,7 +1,10 @@
 package com.smartworkflow;
 
 import android.app.Activity;
+import android.os.SystemClock;
 import android.util.Log;
+import android.widget.TextView;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -9,6 +12,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by LeoAizen on 3/21/2017.
@@ -17,40 +21,26 @@ import java.util.Date;
 public class DB_Managment  extends Activity {
 
     //keep track of day
-    String Day;
-    private int ToDay;
-    Date date = new Date();
     History history = new History();
     //track time
-    public Long Time, Long_Monday, Long_Tuesday, Long_Wednesday, Long_Thursday, Long_Friday, Long_Saturday, Long_Sunday;
-    public boolean DownloadFinish;
+    Long Time;
     //objects
     private static final String TAG = DB_Managment.class.getSimpleName();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("users");
-
-
-    //save data (works)
-    public void SaveTime(String userid, Long time){
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        int weekOfYear = cal.get(Calendar.WEEK_OF_YEAR);
-        Log.d("Week of Year", String.valueOf(weekOfYear)); // great it does work
-        ToDay = date.getDay()-1;
-        Day = history.DaysOfWeek[ToDay];
-        DatabaseReference UserReference = myRef.child(userid+"/"+weekOfYear+"/"+Day+"/Time");//need to add day
-        UserReference.setValue(time);
+    //array of Textview
+    int i;
+    int textVuewSize = 7;
+    TextView[] arraytextView = new TextView[textVuewSize];
+    //save data
+    public void SaveTime(String userid, Long timeWhenStopped, int weekOfYear, String Day){
+        DatabaseReference UserReference = myRef.child(userid+"/"+weekOfYear+"/"+Day+"/Time");
+        UserReference.setValue(timeWhenStopped);
     }
 
 
-    //get data (works)
-    public void GetTime(String userid){
-        DownloadFinish = false;
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        int weekOfYear = cal.get(Calendar.WEEK_OF_YEAR);
-        ToDay = date.getDay()-1;
-        Day = history.DaysOfWeek[ToDay];
+    //get data
+    public void GetTime(String userid, int weekOfYear, String Day){
         DatabaseReference UserReference = myRef.child(userid+"/"+weekOfYear+"/"+Day+"/Time");
         UserReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -58,12 +48,12 @@ public class DB_Managment  extends Activity {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 Time = dataSnapshot.getValue(Long.class);
-                //check if empty
                 if (Time == null){
-                    Log.d("Time Empty:", "True");
+                    Time = 0L;
+                    UserProfile.ProfileChrono.setBase(SystemClock.elapsedRealtime()+ Time);
                 }else{
-                    Log.d("Time Empty:", "False");
-                    DownloadFinish = true;
+                    UserProfile.ProfileChrono.setBase(SystemClock.elapsedRealtime()+ Time);
+                    Log.d("Time ", String.valueOf(Time));
                 }
             }
 
@@ -75,23 +65,65 @@ public class DB_Managment  extends Activity {
         });
     }
     //delete and reset the clock
-    public void DeleteTime(String userid){
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        int weekOfYear = cal.get(Calendar.WEEK_OF_YEAR);
-        ToDay = date.getDay()-1;
-        Day = history.DaysOfWeek[ToDay];
+    public void DeleteTime(String userid, int weekOfYear, String Day){
         DatabaseReference UserReference = myRef.child(userid+"/"+weekOfYear+"/"+Day+"/Time");
         UserReference.removeValue();
     }
-
-    /*public void PopulateInformationAtGlance(String userid){
-        ToDay = date.getDay()-1;
-        Day = history.DaysOfWeek[ToDay];
-        switch (Day){
-            case "Monday":
-
-
+    //populates days wiht proper info
+    public void PopulateDaysAtGlance(String userid, int weekOfYear){
+        for (i = 0; i < 7; i++){
+            String Day = history.DaysOfWeek[i];
+            GetTimePerDay(userid, weekOfYear, Day);
         }
-    }*/
+    }
+
+    public void GetTimePerDay(String userid, int weekOfYear, final String Day){
+        DatabaseReference UserReference = myRef.child(userid+"/"+weekOfYear+"/"+Day+"/Time");
+        UserReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long value = dataSnapshot.getValue(Long.class);
+                if (value != null){
+                    value = value  * -1;
+                    String time = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(value),
+                            TimeUnit.MILLISECONDS.toMinutes(value) % TimeUnit.HOURS.toMinutes(1),
+                            TimeUnit.MILLISECONDS.toSeconds(value) % TimeUnit.MINUTES.toSeconds(1));
+                    switch (Day){
+                        case "Monday":
+                            UserProfile.DayMonday.setText(time);
+                            break;
+                        case "Tuesday":
+                            UserProfile.DayTuesday.setText(time);
+                            break;
+                        case "Wednesday":
+                            UserProfile.DayWednesday.setText(time);
+                            break;
+
+                        case "Thursday":
+                            UserProfile.DayThursday.setText(time);
+                            break;
+
+                        case "Friday":
+                            UserProfile.DayFriday.setText(time);
+                            break;
+
+                        case "Saturday":
+                            UserProfile.DaySaturday.setText(time);
+                            break;
+
+                        case "Sunday":
+                            UserProfile.DaySunday.setText(time);
+                            break;
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", databaseError.toException());
+            }
+        });
+    }
 }
