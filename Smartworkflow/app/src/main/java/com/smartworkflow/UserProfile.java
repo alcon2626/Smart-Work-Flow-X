@@ -116,21 +116,11 @@ public class UserProfile extends AppCompatActivity
             public void onClick(View view) {
                 if (!isChronometerRunning)  // condition on which you check whether it's start or stop
                 {
-                    dbmanager.GetTime(userID, weekOfYear, Day);
-                    Log.d("Clock ", "IN");
-                    ProfileChrono.start();
-                    ClockStatus.setImageResource(R.drawable.clockin);
-                    isChronometerRunning  = true;
+                    StartTimer(weekOfYear, Day);
                 }
                 else
                 {
-                    ProfileChrono.stop();
-                    final Long timeWhenStopped = UserProfile.ProfileChrono.getBase() - SystemClock.elapsedRealtime();
-                    Log.d("Time when Stopped", String.valueOf(timeWhenStopped));
-                    dbmanager.SaveTime(userID, timeWhenStopped, weekOfYear, Day);
-                    ClockStatus.setImageResource(R.drawable.clockout);
-                    dbmanager.PopulateDaysAtGlance(userID, weekOfYear); //loads time ASAP for Days
-                    isChronometerRunning  = false;
+                    StopTimer(weekOfYear, Day);
                 }
             }
         });
@@ -154,6 +144,22 @@ public class UserProfile extends AppCompatActivity
         Profile_Image.setImageResource(R.drawable.genericperson);
         storageManagement.RetrievePicture(userID);
     }
+    private void StopTimer(int weekOfYear, String Day){
+        ProfileChrono.stop();
+        final Long timeWhenStopped = UserProfile.ProfileChrono.getBase() - SystemClock.elapsedRealtime();
+        Log.d("Time when Stopped", String.valueOf(timeWhenStopped));
+        dbmanager.SaveTime(userID, timeWhenStopped, weekOfYear, Day);
+        ClockStatus.setImageResource(R.drawable.clockout);
+        dbmanager.PopulateDaysAtGlance(userID, weekOfYear); //loads time ASAP for Days
+        isChronometerRunning  = false;
+    }
+    private void StartTimer(int weekOfYear, String Day){
+        dbmanager.GetTime(userID, weekOfYear, Day);
+        Log.d("Clock ", "IN");
+        ProfileChrono.start();
+        ClockStatus.setImageResource(R.drawable.clockin);
+        isChronometerRunning  = true;
+    }
 
     //ask first exit second time pressed
     private Boolean exit = false;
@@ -165,12 +171,16 @@ public class UserProfile extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             if (exit) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(UserProfile.this, MainActivity.class);
-                //start intent
+                //FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                //Intent intent = new Intent(UserProfile.this, MainActivity.class);
+                //start intent
+                //startActivity(intent);
             } else {
-                Toast.makeText(this, "Press Back again to Sing Out.",
+                Toast.makeText(this, "Press Back again to Exit.",
                         Toast.LENGTH_SHORT).show();
                 exit = true;
                 new Handler().postDelayed(new Runnable() {
@@ -248,11 +258,19 @@ public class UserProfile extends AppCompatActivity
             ClockStatus.setImageResource(R.drawable.clockin);
             isChronometerRunning  = true;
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_sethrate) {
 
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
+
+        } else if(id == R.id.nav_LogoutProfile){
+            StopTimer(weekOfYear, Day);
+            //i need to stop clock and register time on DB
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(UserProfile.this, MainActivity.class);
+            //start intent
+            startActivity(intent);
 
         }
 

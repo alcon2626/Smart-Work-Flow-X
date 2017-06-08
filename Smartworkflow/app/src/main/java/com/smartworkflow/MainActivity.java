@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         aunthenticator = FirebaseAuth.getInstance();
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(ClienID)
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
@@ -195,26 +195,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
-    private Boolean exit = false;
     @Override
     public void onBackPressed(){
-        if (exit) {
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        } else {
-            Toast.makeText(this, "Press Back again to Exit.",
-                    Toast.LENGTH_SHORT).show();
-            exit = true;
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    exit = false;
-                }
-            }, 3 * 1000);
-
-        }
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     @Override
@@ -244,7 +230,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
             } else {
-                Log.d("Error", "No google Account");
+
+                // Google Sign In failed, update UI appropriately
+                // ...
             }
         }
     }

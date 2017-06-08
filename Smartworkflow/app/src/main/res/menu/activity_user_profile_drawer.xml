@@ -13,23 +13,27 @@
         <item
             android:id="@+id/nav_resetclock"
             android:icon="@mipmap/ic_timer_black_48dp"
-            android:title="Reset Clock" />
+            android:title="@string/ResetClock" />
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:id="@+id/nav_sethrate"
+            android:icon="@mipmap/ic_attach_money_black_24dp"
+            android:title="@string/SetPayRate" />
+        <item
+            android:id="@+id/nav_LogoutProfile"
+            android:icon="@mipmap/ic_exit_to_app_black_24dp"
+            android:title="@string/LogOut" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="@string/Communicate">
         <menu>
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:title="@string/Share" />
             <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="@string/Send" />
         </menu>
     </item>
 

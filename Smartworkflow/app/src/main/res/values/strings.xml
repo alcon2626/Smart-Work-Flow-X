@@ -21,8 +21,8 @@
     <string name="LastName">Last Name</string>
     <string name="CurrentTime">Current Time:</string>
     <string name="WorkedTime">Worked Today:</string>
-    <string name="UpdatePicture">Update Picture</string>
-    <string name="UpdateFromGallery">Update from Gallery</string>
+    <string name="UpdatePicture">Take Picture</string>
+    <string name="UpdateFromGallery">Select Picture</string>
     <string name="InformationAtGlance">Information at a glance</string>
     <string name="Monday">Monday</string>
     <string name="Tuesday">Tuesday</string>
@@ -32,6 +32,12 @@
     <string name="Saturday">Saturday</string>
     <string name="Sunday">Sunday</string>
     <string name="Time00">00:00:00</string>
+    <string name="LogOut">Log Out</string>
+    <string name="SetPayRate">Set pay rate</string>
+    <string name="ResetClock">Reset Clock</string>
+    <string name="Communicate">Communicate</string>
+    <string name="Share">Share</string>
+    <string name="Send">Send</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
