@@ -32,8 +32,11 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
@@ -44,22 +47,26 @@ public class UserProfile extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     /*Map
     * onCreate()
-    * TimeisObtained()
+    * StopTimer()
+    * StartTimer()
     * onBackPressed()
     * boolean onCreateOptionsMenu()
     * boolean onOptionsItemSelected()
     * boolean onNavigationItemSelected()
     * onActivityResult()
-    * runThread()
-    * UpdateDayValues()
     * */
     //variables and objects
-    Long TimefromDB;
-    String userID, UserDisplayName;
-    public static TextView UserName, DayMonday, DayTuesday, DayWednesday, DayThursday, DayFriday, DaySaturday, DaySunday;
-    public static Chronometer ProfileChrono;
-    public static ImageView Profile_Image;
+    Locale local;
+    String userID;
+    String UserDisplayName;
+    Double valuePayRate;
+    static TextView UserName, DayMonday, DayTuesday, DayWednesday;
+    static TextView DayThursday, DayFriday, DaySaturday, DaySunday;
+    TextView netPay;
+    static Chronometer ProfileChrono;
+    static ImageView Profile_Image;
     private double m_Text = 0.0;
+    private double PayRateDBValue;
     ImageButton ClockStatus;
     History history = new History();
     Date date = new Date();
@@ -88,6 +95,7 @@ public class UserProfile extends AppCompatActivity
         }, delayInMillis);
         //time
         int ToDay;
+        //calendar
         cal.setTime(date);
         final int weekOfYear = cal.get(Calendar.WEEK_OF_YEAR);
         ToDay = date.getDay()-1;
@@ -95,9 +103,6 @@ public class UserProfile extends AppCompatActivity
         //get extras
         Intent intent = getIntent();
         userID = intent.getStringExtra("USERID");
-        dbmanager.PopulateDaysAtGlance(userID, weekOfYear); //loads time ASAP for Days
-        dbmanager.GetTime(userID, weekOfYear, Day);//loads time ASAP
-        UserDisplayName = intent.getStringExtra("USERNAME");
         //days of week values from textView
         DayMonday = (TextView) findViewById(R.id.textViewMondayValue);
         DayTuesday = (TextView) findViewById(R.id.textViewTuesdayValue);
@@ -106,10 +111,16 @@ public class UserProfile extends AppCompatActivity
         DayFriday = (TextView) findViewById(R.id.textViewFridayValue);
         DaySaturday = (TextView) findViewById(R.id.textViewSaturdayValue);
         DaySunday = (TextView) findViewById(R.id.textViewSundayValue);
+        //display stuff
+        dbmanager.PopulateDaysAtGlance(userID, weekOfYear); //loads time ASAP for Days
+        dbmanager.GetTime(userID, weekOfYear, Day);//loads time ASAP
+        UserDisplayName = intent.getStringExtra("USERNAME");
         //Chrono creation
         ProfileChrono = (Chronometer) findViewById(R.id.chronometer1);
         //clock status init
         ClockStatus = (ImageButton) findViewById(R.id.imageButtonClockStatus);
+        //textview netpay
+        netPay = (TextView) findViewById(R.id.textViewNetPay);
         //toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -149,9 +160,52 @@ public class UserProfile extends AppCompatActivity
         Profile_Image.setImageResource(R.drawable.genericperson);
         storageManagement.RetrievePicture(userID);
     }
+
+    public void setPayNet() {
+
+        Double DayHours = 0.0;
+        String dateTest = "";
+                //pay rate
+        dateTest = DayMonday.getText().toString();
+        Log.d("Monday", dateTest);
+        DayHours += daysToDouble(dateTest);
+        dateTest = DayTuesday.getText().toString();
+        Log.d("Tuesday", dateTest);
+        DayHours += daysToDouble(dateTest);
+        dateTest = DayWednesday.getText().toString();
+        Log.d("Wednesday", dateTest);
+        DayHours += daysToDouble(dateTest);
+        dateTest = DayThursday.getText().toString();
+        Log.d("Thursday", dateTest);
+        DayHours += daysToDouble(dateTest);
+        dateTest = DayFriday.getText().toString();
+        Log.d("Friday", dateTest);
+        DayHours += daysToDouble(dateTest);
+        dateTest = DaySaturday.getText().toString();
+        Log.d("Saturday", dateTest);
+        DayHours += daysToDouble(dateTest);
+        dateTest = DaySunday.getText().toString();
+        Log.d("Sunday", dateTest);
+        DayHours += daysToDouble(dateTest);
+        Log.d("Total hours", DayHours.toString());
+
+        valuePayRate = dbmanager.getPayRate(userID);
+        netPay.setText(String.format(local, DayHours.toString()));
+
+    }
+    private Double daysToDouble(String day){
+        Double total = 0.0;
+        String[] tokens = day.split(":");
+        int hours = Integer.parseInt(tokens[0]);
+        int minutes = Integer.parseInt(tokens[1]);
+        day = hours + "." + minutes;
+        total = Double.parseDouble(day);
+        return total;
+    }
+
     private void StopTimer(int weekOfYear, String Day){
         ProfileChrono.stop();
-        final Long timeWhenStopped = UserProfile.ProfileChrono.getBase() - SystemClock.elapsedRealtime();
+        timeWhenStopped = UserProfile.ProfileChrono.getBase() - SystemClock.elapsedRealtime();
         Log.d("Time when Stopped", String.valueOf(timeWhenStopped));
         dbmanager.SaveTime(userID, timeWhenStopped, weekOfYear, Day);
         ClockStatus.setImageResource(R.drawable.clockout);
@@ -268,16 +322,17 @@ public class UserProfile extends AppCompatActivity
             builder.setTitle("Enter pay rate");
 
             // Set up the input
-            final EditText input = new EditText(this);
+            final EditText inputpayrate = new EditText(this);
             // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-            input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-            builder.setView(input);
+            inputpayrate.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            builder.setView(inputpayrate);
 
             // Set up the buttons
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    m_Text = Double.parseDouble(input.getText().toString());
+                    m_Text = Double.parseDouble(inputpayrate.getText().toString());
+                    dbmanager.setPayRate(userID, m_Text);
                 }
             });
             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

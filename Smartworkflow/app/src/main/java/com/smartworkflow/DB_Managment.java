@@ -12,6 +12,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -24,6 +25,8 @@ public class DB_Managment  extends Activity {
     History history = new History();
     //track time
     Long Time;
+    Double valuePayRate;
+    Locale local;
     //objects
     private static final String TAG = DB_Managment.class.getSimpleName();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -53,7 +56,6 @@ public class DB_Managment  extends Activity {
                     UserProfile.ProfileChrono.setBase(SystemClock.elapsedRealtime()+ Time);
                 }else{
                     UserProfile.ProfileChrono.setBase(SystemClock.elapsedRealtime()+ Time);
-                    Log.d("Time ", String.valueOf(Time));
                 }
             }
 
@@ -63,6 +65,33 @@ public class DB_Managment  extends Activity {
                 Log.w(TAG, "Failed to read value.", databaseError.toException());
             }
         });
+    }
+    public void setPayRate(String userid, Double payrate){
+        DatabaseReference UserReference = myRef.child(userid+"/"+"PayRate");
+        UserReference.setValue(payrate);
+    }
+    public Double getPayRate(String userid){
+        DatabaseReference UserReference = myRef.child(userid+"/"+"PayRate");
+        UserReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                valuePayRate = dataSnapshot.getValue(Double.class);
+                if (valuePayRate == null){
+                    valuePayRate = 0.0D;
+                }else{
+                    Log.d("valuePayRate ", String.valueOf(valuePayRate));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", databaseError.toException());
+            }
+        });
+        return valuePayRate;
     }
     //delete and reset the clock
     public void DeleteTime(String userid, int weekOfYear, String Day){
@@ -85,10 +114,11 @@ public class DB_Managment  extends Activity {
                 Long value = dataSnapshot.getValue(Long.class);
                 if (value != null){
                     value = value  * -1;
-                    String time = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(value),
+                    String time = String.format(local, "%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(value),
                             TimeUnit.MILLISECONDS.toMinutes(value) % TimeUnit.HOURS.toMinutes(1),
                             TimeUnit.MILLISECONDS.toSeconds(value) % TimeUnit.MINUTES.toSeconds(1));
                     switch (Day){
+                        //setters and getters
                         case "Monday":
                             UserProfile.DayMonday.setText(time);
                             break;
