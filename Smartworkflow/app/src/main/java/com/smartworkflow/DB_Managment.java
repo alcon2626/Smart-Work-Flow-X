@@ -21,11 +21,10 @@ import java.util.concurrent.TimeUnit;
 
 public class DB_Managment  extends Activity {
 
-    //keep track of day
-    History history = new History();
     //track time
     Long Time;
-    Double valuePayRate;
+    ProfileHelper helper = new ProfileHelper();
+    private Double valuePayRate;
     Locale local;
     //objects
     private static final String TAG = DB_Managment.class.getSimpleName();
@@ -70,7 +69,7 @@ public class DB_Managment  extends Activity {
         DatabaseReference UserReference = myRef.child(userid+"/"+"PayRate");
         UserReference.setValue(payrate);
     }
-    public Double getPayRate(String userid){
+    public void getPayRate(String userid){
         DatabaseReference UserReference = myRef.child(userid+"/"+"PayRate");
         UserReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -82,6 +81,8 @@ public class DB_Managment  extends Activity {
                     valuePayRate = 0.0D;
                 }else{
                     Log.d("valuePayRate ", String.valueOf(valuePayRate));
+                    UserProfile.valueDBPayRate = valuePayRate;
+                    Log.d("valuePayRate UP ", String.valueOf(UserProfile.valueDBPayRate));
                 }
             }
 
@@ -91,7 +92,6 @@ public class DB_Managment  extends Activity {
                 Log.w(TAG, "Failed to read value.", databaseError.toException());
             }
         });
-        return valuePayRate;
     }
     //delete and reset the clock
     public void DeleteTime(String userid, int weekOfYear, String Day){
@@ -101,7 +101,7 @@ public class DB_Managment  extends Activity {
     //populates days wiht proper info
     public void PopulateDaysAtGlance(String userid, int weekOfYear){
         for (i = 0; i < 7; i++){
-            String Day = history.DaysOfWeek[i];
+            String Day = helper.DaysOfWeek[i];
             GetTimePerDay(userid, weekOfYear, Day);
         }
     }
@@ -118,7 +118,7 @@ public class DB_Managment  extends Activity {
                             TimeUnit.MILLISECONDS.toMinutes(value) % TimeUnit.HOURS.toMinutes(1),
                             TimeUnit.MILLISECONDS.toSeconds(value) % TimeUnit.MINUTES.toSeconds(1));
                     switch (Day){
-                        //setters and getters
+                        //setters
                         case "Monday":
                             UserProfile.DayMonday.setText(time);
                             break;
@@ -155,5 +155,11 @@ public class DB_Managment  extends Activity {
                 Log.w(TAG, "Failed to read value.", databaseError.toException());
             }
         });
+    }
+
+
+    //get double payrate
+    public Double getValuePayRate() {
+        return valuePayRate;
     }
 }

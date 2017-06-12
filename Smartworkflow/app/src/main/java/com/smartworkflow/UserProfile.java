@@ -29,77 +29,77 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class UserProfile extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     /*Map
-    * onCreate()
-    * StopTimer()
-    * StartTimer()
-    * onBackPressed()
-    * boolean onCreateOptionsMenu()
-    * boolean onOptionsItemSelected()
-    * boolean onNavigationItemSelected()
-    * onActivityResult()
+    * onCreate() creates all variables plus graphics.
+    * loadAndSetPayNet() it delays the set pay function for 2 seconds, does the final calc and updates GUI, it can be called from anywhere.
+    * StopTimer() stops the Chronometer
+    * StartTimer() starts the Chronometer
+    * onBackPressed() sends you back outside after warning you
+    * boolean onCreateOptionsMenu() creates the menu of the left, left panel
+    * boolean onOptionsItemSelected() Handle action bar item clicks
+    * boolean onNavigationItemSelected() registers when an item is clicked and does something, left panel
+    * useUIThreat() update graphics on UI thread, need it because Timer Threat doesn't allows it.
+    * onActivityResult() // handles picture Intents and setting profile picture
     * */
-    //variables and objects
+
+    //variables
     Locale local;
     String userID;
     String UserDisplayName;
-    Double valuePayRate;
+    public static Double valueDBPayRate = 0.0;
+    Double netMoney = 0.0;
+    Timer timer = new Timer();
+    long delayInMillis = 2000;
+    private double m_Text = 0.0;
+    boolean isChronometerRunning = false;
+    long timeWhenStopped = 0;
+    int ToDay;
+
+    //and objects
     static TextView UserName, DayMonday, DayTuesday, DayWednesday;
     static TextView DayThursday, DayFriday, DaySaturday, DaySunday;
     TextView netPay;
     static Chronometer ProfileChrono;
     static ImageView Profile_Image;
-    private double m_Text = 0.0;
-    private double PayRateDBValue;
     ImageButton ClockStatus;
-    History history = new History();
     Date date = new Date();
     Calendar cal = Calendar.getInstance();
     Storage_Management storageManagement = new Storage_Management();// handle picture
     DB_Managment dbmanager = new DB_Managment(); // handle data
-    boolean isChronometerRunning = false;
-    long timeWhenStopped = 0;
+    ProfileHelper helper = new ProfileHelper();
+    public ProgressDialog pd;
+
+    //creates most things I would say
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
-        //two seconds to load information
-        final ProgressDialog pd = new ProgressDialog(UserProfile.this);
+
+        pd = new ProgressDialog(UserProfile.this);
         pd.setTitle("Loading...");
         pd.setMessage("Please wait.");
         pd.show();
-
-        long delayInMillis = 2000;
-        Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 pd.dismiss();
             }
         }, delayInMillis);
-        //time
-        int ToDay;
+
         //calendar
         cal.setTime(date);
         final int weekOfYear = cal.get(Calendar.WEEK_OF_YEAR);
         ToDay = date.getDay()-1;
-        final String Day = history.DaysOfWeek[ToDay];
+        final String Day = helper.DaysOfWeek[ToDay];
         //get extras
         Intent intent = getIntent();
         userID = intent.getStringExtra("USERID");
@@ -115,6 +115,8 @@ public class UserProfile extends AppCompatActivity
         dbmanager.PopulateDaysAtGlance(userID, weekOfYear); //loads time ASAP for Days
         dbmanager.GetTime(userID, weekOfYear, Day);//loads time ASAP
         UserDisplayName = intent.getStringExtra("USERNAME");
+        //get stuff
+        dbmanager.getPayRate(userID);
         //Chrono creation
         ProfileChrono = (Chronometer) findViewById(R.id.chronometer1);
         //clock status init
@@ -159,48 +161,66 @@ public class UserProfile extends AppCompatActivity
         //loading image from database for profile
         Profile_Image.setImageResource(R.drawable.genericperson);
         storageManagement.RetrievePicture(userID);
+        loadAndSetPayNet();
+
+        DayMonday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProfileHelper.MyAlertBox("Hours", "Enter hours worked for Monday", UserProfile.this, helper.DaysOfWeek[0]);
+            }
+        });
+        DayTuesday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProfileHelper.MyAlertBox("Hours", "Enter hours worked for Tuesday", UserProfile.this, helper.DaysOfWeek[1]);
+            }
+        });
+        DayWednesday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProfileHelper.MyAlertBox("Hours", "Enter hours worked for Wednesday", UserProfile.this, helper.DaysOfWeek[2]);
+            }
+        });
+        DayThursday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProfileHelper.MyAlertBox("Hours", "Enter hours worked for Thursday", UserProfile.this, helper.DaysOfWeek[3]);
+            }
+        });
+        DayFriday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProfileHelper.MyAlertBox("Hours", "Enter hours worked for Friday", UserProfile.this, helper.DaysOfWeek[4]);
+            }
+        });
+        DaySaturday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProfileHelper.MyAlertBox("Hours", "Enter hours worked for Saturday", UserProfile.this, helper.DaysOfWeek[5]);
+            }
+        });
+        DaySunday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProfileHelper.MyAlertBox("Hours", "Enter hours worked for Sunday", UserProfile.this, helper.DaysOfWeek[6]);
+            }
+        });
+
     }
 
-    public void setPayNet() {
 
-        Double DayHours = 0.0;
-        String dateTest = "";
-                //pay rate
-        dateTest = DayMonday.getText().toString();
-        Log.d("Monday", dateTest);
-        DayHours += daysToDouble(dateTest);
-        dateTest = DayTuesday.getText().toString();
-        Log.d("Tuesday", dateTest);
-        DayHours += daysToDouble(dateTest);
-        dateTest = DayWednesday.getText().toString();
-        Log.d("Wednesday", dateTest);
-        DayHours += daysToDouble(dateTest);
-        dateTest = DayThursday.getText().toString();
-        Log.d("Thursday", dateTest);
-        DayHours += daysToDouble(dateTest);
-        dateTest = DayFriday.getText().toString();
-        Log.d("Friday", dateTest);
-        DayHours += daysToDouble(dateTest);
-        dateTest = DaySaturday.getText().toString();
-        Log.d("Saturday", dateTest);
-        DayHours += daysToDouble(dateTest);
-        dateTest = DaySunday.getText().toString();
-        Log.d("Sunday", dateTest);
-        DayHours += daysToDouble(dateTest);
-        Log.d("Total hours", DayHours.toString());
-
-        valuePayRate = dbmanager.getPayRate(userID);
-        netPay.setText(String.format(local, DayHours.toString()));
-
-    }
-    private Double daysToDouble(String day){
-        Double total = 0.0;
-        String[] tokens = day.split(":");
-        int hours = Integer.parseInt(tokens[0]);
-        int minutes = Integer.parseInt(tokens[1]);
-        day = hours + "." + minutes;
-        total = Double.parseDouble(day);
-        return total;
+    private void loadAndSetPayNet() {
+        //it takes some time for graphics to load, after load get the values
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                helper.setPayNet();
+                Log.d("Rate from DB", valueDBPayRate.toString());
+                netMoney = valueDBPayRate * helper.DayHours;
+                Log.d("Total money", netMoney.toString());
+                useUIThread();
+            }
+        }, delayInMillis);
     }
 
     private void StopTimer(int weekOfYear, String Day){
@@ -210,6 +230,7 @@ public class UserProfile extends AppCompatActivity
         dbmanager.SaveTime(userID, timeWhenStopped, weekOfYear, Day);
         ClockStatus.setImageResource(R.drawable.clockout);
         dbmanager.PopulateDaysAtGlance(userID, weekOfYear); //loads time ASAP for Days
+        loadAndSetPayNet();
         isChronometerRunning  = false;
     }
     private void StartTimer(int weekOfYear, String Day){
@@ -280,7 +301,7 @@ public class UserProfile extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         final int weekOfYear = cal.get(Calendar.WEEK_OF_YEAR);
         int ToDay = date.getDay()-1;
-        final String Day = history.DaysOfWeek[ToDay];
+        final String Day = helper.DaysOfWeek[ToDay];
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -333,6 +354,8 @@ public class UserProfile extends AppCompatActivity
                 public void onClick(DialogInterface dialog, int which) {
                     m_Text = Double.parseDouble(inputpayrate.getText().toString());
                     dbmanager.setPayRate(userID, m_Text);
+                    valueDBPayRate = m_Text;
+                    loadAndSetPayNet();
                 }
             });
             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -349,7 +372,9 @@ public class UserProfile extends AppCompatActivity
         } else if (id == R.id.nav_send) {
 
         } else if(id == R.id.nav_LogoutProfile){
-            StopTimer(weekOfYear, Day);
+            if(isChronometerRunning){
+                StopTimer(weekOfYear, Day);
+            }
             //i need to stop clock and register time on DB
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(UserProfile.this, MainActivity.class);
@@ -363,11 +388,28 @@ public class UserProfile extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
-
+    //update graphics on n UI thread
+    private void useUIThread() {
+        new Thread() {
+            public void run() {
+                try {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Double roundOff = Math.round(netMoney * 100.0) / 100.0;
+                            netPay.setText(String.format(local, roundOff.toString()));
+                            helper.DayHours = 0.0D;
+                            netMoney = 0.0D;
+                        }
+                    });
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
     //On activity result + crop
-    //result
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
         switch (requestCode) {
@@ -387,7 +429,6 @@ public class UserProfile extends AppCompatActivity
                         AsyncTask.execute(new Runnable() {
                             @Override
                             public void run() {
-                                //TODO your background code
                                 try{
                                     storageManagement.SavePicture(CameraPicture, userID);
                                 }catch (Exception e){
@@ -423,7 +464,6 @@ public class UserProfile extends AppCompatActivity
                         AsyncTask.execute(new Runnable() {
                             @Override
                             public void run() {
-                                //TODO your background code
                                 try{
                                     storageManagement.SavePicture(selectedBitmap, userID);
                                 }catch (Exception e){
