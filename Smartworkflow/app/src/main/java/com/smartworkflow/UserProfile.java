@@ -166,43 +166,43 @@ public class UserProfile extends AppCompatActivity
         DayMonday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileHelper.MyAlertBox("Hours", "Enter hours worked for Monday", UserProfile.this, helper.DaysOfWeek[0]);
+                ProfileHelper.MyAlertBox("Hours", "Enter hours worked for Monday", UserProfile.this, helper.DaysOfWeek[0], userID, weekOfYear);
             }
         });
         DayTuesday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileHelper.MyAlertBox("Hours", "Enter hours worked for Tuesday", UserProfile.this, helper.DaysOfWeek[1]);
+                ProfileHelper.MyAlertBox("Hours", "Enter hours worked for Tuesday", UserProfile.this, helper.DaysOfWeek[1], userID, weekOfYear);
             }
         });
         DayWednesday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileHelper.MyAlertBox("Hours", "Enter hours worked for Wednesday", UserProfile.this, helper.DaysOfWeek[2]);
+                ProfileHelper.MyAlertBox("Hours", "Enter hours worked for Wednesday", UserProfile.this, helper.DaysOfWeek[2], userID, weekOfYear);
             }
         });
         DayThursday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileHelper.MyAlertBox("Hours", "Enter hours worked for Thursday", UserProfile.this, helper.DaysOfWeek[3]);
+                ProfileHelper.MyAlertBox("Hours", "Enter hours worked for Thursday", UserProfile.this, helper.DaysOfWeek[3], userID, weekOfYear);
             }
         });
         DayFriday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileHelper.MyAlertBox("Hours", "Enter hours worked for Friday", UserProfile.this, helper.DaysOfWeek[4]);
+                ProfileHelper.MyAlertBox("Hours", "Enter hours worked for Friday", UserProfile.this, helper.DaysOfWeek[4], userID, weekOfYear);
             }
         });
         DaySaturday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileHelper.MyAlertBox("Hours", "Enter hours worked for Saturday", UserProfile.this, helper.DaysOfWeek[5]);
+                ProfileHelper.MyAlertBox("Hours", "Enter hours worked for Saturday", UserProfile.this, helper.DaysOfWeek[5], userID, weekOfYear);
             }
         });
         DaySunday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileHelper.MyAlertBox("Hours", "Enter hours worked for Sunday", UserProfile.this, helper.DaysOfWeek[6]);
+                ProfileHelper.MyAlertBox("Hours", "Enter hours worked for Sunday", UserProfile.this, helper.DaysOfWeek[6], userID, weekOfYear);
             }
         });
 
@@ -329,6 +329,13 @@ public class UserProfile extends AppCompatActivity
                 Toast toast = Toast.makeText(UserProfile.this, errorMessage, Toast.LENGTH_SHORT);
                 toast.show();
             }
+        } else if (id == R.id.nav_refresh) {
+            //reload everything
+            dbmanager.PopulateDaysAtGlance(userID, weekOfYear); //loads time ASAP for Days
+            storageManagement.RetrievePicture(userID);
+            loadAndSetPayNet();
+
+
         } else if (id == R.id.nav_resetclock) {
             //reset time to 0 and start the Chronometer
             //also delete the time value on DB

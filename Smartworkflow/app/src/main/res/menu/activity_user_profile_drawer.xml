@@ -11,6 +11,11 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/UpdateFromGallery" />
         <item
+            android:id="@+id/nav_refresh"
+            android:icon="@mipmap/ic_refresh_black_24dp"
+            android:title="@string/Refresh" />
+
+        <item
             android:id="@+id/nav_resetclock"
             android:icon="@mipmap/ic_timer_black_48dp"
             android:title="@string/ResetClock" />

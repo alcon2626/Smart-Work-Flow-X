@@ -7,6 +7,13 @@ import android.text.InputType;
 import android.util.Log;
 import android.widget.EditText;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.StringTokenizer;
+import java.util.concurrent.TimeUnit;
+
 /**
  * Created by SurfaceUser on 6/12/2017.
  */
@@ -16,6 +23,7 @@ import android.widget.EditText;
  */
 
 class ProfileHelper{
+    static long duration = 0;
     Double DayHours = 0.0;
     String DaysOfWeek[] = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
@@ -58,7 +66,7 @@ class ProfileHelper{
         Log.d("Total hours", DayHours.toString());
     }
 
-    static void MyAlertBox(String title, String mymessage,  Context context, String day)
+    static void MyAlertBox(String title, String mymessage, Context context, final String day, final String userID, final int weekOfYear)
     {
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context);
         builder.setTitle(title);
@@ -74,9 +82,49 @@ class ProfileHelper{
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                DB_Managment dbmanager = new DB_Managment();
+                long timeWhenStopped = 0;
                 Double m_Text = Double.parseDouble(inputpayrate.getText().toString());
-                Log.d("m_Text", m_Text.toString());
-                //String test = doubleToTimeFormat(m_Text);
+                String time = doubleToTimeFormat(m_Text);
+                Log.d("finalResult", time);
+
+                timeWhenStopped = duration * -1;
+                Log.d("timeWhenStopped", String.valueOf(timeWhenStopped));
+                switch(day){
+                    //setters
+                    case "Monday":
+                        UserProfile.DayMonday.setText(time);
+                        dbmanager.SaveTime(userID, timeWhenStopped, weekOfYear, day);
+                        break;
+                    case "Tuesday":
+                        UserProfile.DayTuesday.setText(time);
+                        dbmanager.SaveTime(userID, timeWhenStopped, weekOfYear, day);
+                        break;
+                    case "Wednesday":
+                        UserProfile.DayWednesday.setText(time);
+                        dbmanager.SaveTime(userID, timeWhenStopped, weekOfYear, day);
+                        break;
+
+                    case "Thursday":
+                        UserProfile.DayThursday.setText(time);
+                        dbmanager.SaveTime(userID, timeWhenStopped, weekOfYear, day);
+                        break;
+
+                    case "Friday":
+                        UserProfile.DayFriday.setText(time);
+                        dbmanager.SaveTime(userID, timeWhenStopped, weekOfYear, day);
+                        break;
+
+                    case "Saturday":
+                        UserProfile.DaySaturday.setText(time);
+                        dbmanager.SaveTime(userID, timeWhenStopped, weekOfYear, day);
+                        break;
+
+                    case "Sunday":
+                        UserProfile.DaySunday.setText(time);
+                        dbmanager.SaveTime(userID, timeWhenStopped, weekOfYear, day);
+                        break;
+                }
 
             }
         });
@@ -89,14 +137,31 @@ class ProfileHelper{
 
         builder.show();
     }
-    private static String doubleToTimeFormat(Double value){
+
+    static private String doubleToTimeFormat(Double value){
+        Log.d("m_Text D to Time", value.toString());
         String splitter;
-        splitter = String.valueOf(value);
-        String[] tokens = splitter.split(".");
-        String hours = tokens[0];
-        String minutes = tokens[1];
-        String finalResult = hours+":"+ minutes + ":" + "00";
-        Log.d("finalResult", finalResult);
-        return finalResult;
+        int hoursH = 0, minutesM = 0, secondS = 0;
+        splitter = value.toString();
+        Log.d("splitter", splitter);
+        StringTokenizer defaultTokenizer = new StringTokenizer(splitter,".");
+
+        String hours = defaultTokenizer.nextToken();
+        if (hours.length() == 1){
+            hours = "0" + hours;
+            hoursH = Integer.parseInt(hours);
+        }
+        String minutes = defaultTokenizer.nextToken();
+        if (minutes.length()== 1){
+            minutes = "0" + minutes;
+            hoursH = Integer.parseInt(hours);
+        }else{
+            minutes = minutes.substring(0, 2);
+            minutesM = Integer.parseInt(minutes);
+        }
+        duration = 3600 * hoursH + 60 * minutesM + secondS;
+        duration = TimeUnit.MILLISECONDS.convert(duration, TimeUnit.SECONDS);
+        System.out.println("time in millis = " + duration);
+        return hours+":"+ minutes + ":" + "00";
     }
 }
