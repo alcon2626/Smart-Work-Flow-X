@@ -1,15 +1,11 @@
 package com.smartworkflow;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.InputType;
 import android.util.Log;
 import android.widget.EditText;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
@@ -23,6 +19,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 class ProfileHelper{
+    private Locale local;
     static long duration = 0;
     Double DayHours = 0.0;
     String DaysOfWeek[] = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
@@ -63,6 +60,7 @@ class ProfileHelper{
         dateTest = UserProfile.DaySunday.getText().toString();
 
         DayHours += daysToDouble(dateTest);
+
         Log.d("Total hours", DayHours.toString());
     }
 

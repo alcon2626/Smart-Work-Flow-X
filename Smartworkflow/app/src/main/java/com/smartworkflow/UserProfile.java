@@ -4,15 +4,18 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -27,12 +30,17 @@ import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -65,8 +73,12 @@ public class UserProfile extends AppCompatActivity
     int ToDay;
 
     //and objects
+    File imageFile;
+    private ShareActionProvider mShareActionProvider;
+    TextView textviewTotalHours;
     static TextView UserName, DayMonday, DayTuesday, DayWednesday;
     static TextView DayThursday, DayFriday, DaySaturday, DaySunday;
+    TextView payRateFromDB;
     TextView netPay;
     static Chronometer ProfileChrono;
     static ImageView Profile_Image;
@@ -111,6 +123,8 @@ public class UserProfile extends AppCompatActivity
         DayFriday = (TextView) findViewById(R.id.textViewFridayValue);
         DaySaturday = (TextView) findViewById(R.id.textViewSaturdayValue);
         DaySunday = (TextView) findViewById(R.id.textViewSundayValue);
+        textviewTotalHours = (TextView) findViewById(R.id.textViewTotalHours);
+        payRateFromDB = (TextView) findViewById(R.id.textViewCurrentPayRate);
         //display stuff
         dbmanager.PopulateDaysAtGlance(userID, weekOfYear); //loads time ASAP for Days
         dbmanager.GetTime(userID, weekOfYear, Day);//loads time ASAP
@@ -166,43 +180,87 @@ public class UserProfile extends AppCompatActivity
         DayMonday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileHelper.MyAlertBox("Hours", "Enter hours worked for Monday", UserProfile.this, helper.DaysOfWeek[0], userID, weekOfYear);
+                ProfileHelper.MyAlertBox("Modify Hours", "Enter hours worked for Monday", UserProfile.this, helper.DaysOfWeek[0], userID, weekOfYear);
+                //it takes some time for graphics to load, after load get the values
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        loadAndSetPayNet();
+                    }
+                }, delayInMillis);
+
             }
         });
         DayTuesday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileHelper.MyAlertBox("Hours", "Enter hours worked for Tuesday", UserProfile.this, helper.DaysOfWeek[1], userID, weekOfYear);
+                ProfileHelper.MyAlertBox("Modify Hours", "Enter hours worked for Tuesday", UserProfile.this, helper.DaysOfWeek[1], userID, weekOfYear);
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        loadAndSetPayNet();
+                    }
+                }, delayInMillis);
             }
         });
         DayWednesday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileHelper.MyAlertBox("Hours", "Enter hours worked for Wednesday", UserProfile.this, helper.DaysOfWeek[2], userID, weekOfYear);
+                ProfileHelper.MyAlertBox("Modify Hours", "Enter hours worked for Wednesday", UserProfile.this, helper.DaysOfWeek[2], userID, weekOfYear);
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        loadAndSetPayNet();
+                    }
+                }, delayInMillis);
             }
         });
         DayThursday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileHelper.MyAlertBox("Hours", "Enter hours worked for Thursday", UserProfile.this, helper.DaysOfWeek[3], userID, weekOfYear);
+                ProfileHelper.MyAlertBox("Modify Hours", "Enter hours worked for Thursday", UserProfile.this, helper.DaysOfWeek[3], userID, weekOfYear);
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        loadAndSetPayNet();
+                    }
+                }, delayInMillis);
             }
         });
         DayFriday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileHelper.MyAlertBox("Hours", "Enter hours worked for Friday", UserProfile.this, helper.DaysOfWeek[4], userID, weekOfYear);
+                ProfileHelper.MyAlertBox("Modify Hours", "Enter hours worked for Friday", UserProfile.this, helper.DaysOfWeek[4], userID, weekOfYear);
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        loadAndSetPayNet();
+                    }
+                }, delayInMillis);
             }
         });
         DaySaturday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileHelper.MyAlertBox("Hours", "Enter hours worked for Saturday", UserProfile.this, helper.DaysOfWeek[5], userID, weekOfYear);
+                ProfileHelper.MyAlertBox("Modify Hours", "Enter hours worked for Saturday", UserProfile.this, helper.DaysOfWeek[5], userID, weekOfYear);
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        loadAndSetPayNet();
+                    }
+                }, delayInMillis);
             }
         });
         DaySunday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileHelper.MyAlertBox("Hours", "Enter hours worked for Sunday", UserProfile.this, helper.DaysOfWeek[6], userID, weekOfYear);
+                ProfileHelper.MyAlertBox("Modify Hours", "Enter hours worked for Sunday", UserProfile.this, helper.DaysOfWeek[6], userID, weekOfYear);
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        loadAndSetPayNet();
+                    }
+                }, delayInMillis);
             }
         });
 
@@ -375,6 +433,15 @@ public class UserProfile extends AppCompatActivity
             builder.show();
 
         } else if (id == R.id.nav_share) {
+            // Fetch and store ShareActionProvider
+            View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
+            Bitmap bitmap = getScreenShot(rootView);
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("image/jpeg");
+            Uri _uri = Uri.fromFile(imageFile);
+            sharingIntent.putExtra(Intent.EXTRA_STREAM, _uri);
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "My work week");
+            startActivity(Intent.createChooser(sharingIntent, "Share via"));
 
         } else if (id == R.id.nav_send) {
 
@@ -395,6 +462,13 @@ public class UserProfile extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    // Call to update the share intent
+    private void setShareIntent(Intent shareIntent) {
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
+    }
     //update graphics on n UI thread
     private void useUIThread() {
         new Thread() {
@@ -405,6 +479,11 @@ public class UserProfile extends AppCompatActivity
                         public void run() {
                             Double roundOff = Math.round(netMoney * 100.0) / 100.0;
                             netPay.setText(String.format(local, roundOff.toString()));
+                            dbmanager.getPayRate(userID);
+                            payRateFromDB.setText(String.format(local, valueDBPayRate.toString()));
+                            roundOff = Math.round(helper.DayHours * 100.0) / 100.0;
+                            textviewTotalHours.setText(String.format(local, roundOff.toString()));
+                            payRateFromDB.setText(String.format(local, valueDBPayRate.toString()));
                             helper.DayHours = 0.0D;
                             netMoney = 0.0D;
                         }
@@ -416,6 +495,42 @@ public class UserProfile extends AppCompatActivity
             }
         }.start();
     }
+    //take screenshot of the app
+    public Bitmap getScreenShot(View view) {
+        View screenView = view.getRootView();
+        screenView.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(screenView.getDrawingCache());
+        screenView.setDrawingCacheEnabled(false);
+        store(bitmap);
+        return bitmap;
+    }
+    public void store(Bitmap bm){
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/Smart workflow");
+        boolean created = myDir.exists();
+        if (created){
+            Log.d("created" , "True");
+        }else{
+            Log.d("created" , "False");
+        }
+        Random generator = new Random();
+        int n = 10000;
+        n = generator.nextInt(n);
+        String fname = "Image-"+ n +".jpg";
+        imageFile = new File (myDir, fname);
+        if (imageFile.exists ()){ imageFile.delete ();}
+        try {
+            FileOutputStream out = new FileOutputStream(imageFile);
+            bm.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
     //On activity result + crop
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);

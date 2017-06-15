@@ -19,7 +19,7 @@
     <string name="Profile">Profile</string>
     <string name="Company_Logo">Company Logo</string>
     <string name="LastName">Last Name</string>
-    <string name="CurrentTime">Current Time:</string>
+    <string name="CurrentTime">Time:</string>
     <string name="WorkedTime">Worked Today:</string>
     <string name="UpdatePicture">Take Picture</string>
     <string name="UpdateFromGallery">Select Picture</string>
@@ -40,6 +40,8 @@
     <string name="Send">Send</string>
     <string name="Net">Net Pay</string>
     <string name="Refresh">Refresh</string>
+    <string name="ThisWeekTotalH">Total Hours:</string>
+    <string name="CurrentPayRate">Pay rate:</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

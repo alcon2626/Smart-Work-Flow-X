@@ -54,11 +54,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/CurrentTime"
-        app:layout_constraintRight_toLeftOf="@+id/textClock"
-        android:layout_marginRight="9dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/view"
-        android:layout_marginEnd="9dp" />
+        android:layout_marginEnd="9dp"
+        app:layout_constraintLeft_toRightOf="@+id/textViewMondayValue"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="88dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.38" />
 
     <TextView
         android:id="@+id/textView2"
@@ -281,24 +284,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@mipmap/ic_attach_money_black_24dp"
-        app:layout_constraintRight_toLeftOf="@+id/textViewNetPay"
-        android:layout_marginRight="8dp"
-        app:layout_constraintLeft_toRightOf="@+id/textView5"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="160dp"
         android:layout_marginLeft="8dp"
-        app:layout_constraintHorizontal_bias="0.0"
-        android:layout_marginTop="6dp"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSunday" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.828" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="110dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="162dp"
         android:text="@string/Net"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSunday"
-        android:layout_marginLeft="16dp"
+        app:layout_constraintHorizontal_bias="0.665"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginStart="16dp" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewNetPay"
@@ -306,13 +312,62 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="46dp"
         android:text="@string/Time00"
+        android:textColor="@color/SeaGreen"
         android:textAppearance="@style/TextAppearance.AppCompat"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSundayValue"
-        android:layout_marginLeft="105dp"
-        app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.208" />
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.974"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="162dp" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ThisWeekTotalH"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="10dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.762"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="113dp" />
+
+    <TextView
+        android:id="@+id/textViewTotalHours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/Time00"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textClock" />
+
+    <TextView
+        android:id="@+id/textViewCurrentPayRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/Time00"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTotalHours" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/CurrentPayRate"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="13dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.716"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="137dp" />
 
 </android.support.constraint.ConstraintLayout>
