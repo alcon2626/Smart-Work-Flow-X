@@ -495,7 +495,7 @@ public class UserProfile extends AppCompatActivity
             }
         }.start();
     }
-    //take screenshot of the app
+    //take screenshot of the app (working)
     public Bitmap getScreenShot(View view) {
         View screenView = view.getRootView();
         screenView.setDrawingCacheEnabled(true);
@@ -504,6 +504,7 @@ public class UserProfile extends AppCompatActivity
         store(bitmap);
         return bitmap;
     }
+    //store the screenshot so that I can use it and send it (not working)
     public void store(Bitmap bm){
         String root = Environment.getExternalStorageDirectory().toString();
         File myDir = new File(root + "/Smart workflow");
