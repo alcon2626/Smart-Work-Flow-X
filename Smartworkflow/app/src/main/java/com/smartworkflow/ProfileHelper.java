@@ -2,10 +2,15 @@ package com.smartworkflow;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.text.InputType;
 import android.util.Log;
 import android.widget.EditText;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
@@ -161,5 +166,11 @@ class ProfileHelper{
         duration = TimeUnit.MILLISECONDS.convert(duration, TimeUnit.SECONDS);
         System.out.println("time in millis = " + duration);
         return hours+":"+ minutes + ":" + "00";
+    }
+    static public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 }

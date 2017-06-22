@@ -1,21 +1,26 @@
 package com.smartworkflow;
 
+import android.*;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -33,14 +38,17 @@ import android.widget.ImageView;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -60,6 +68,7 @@ public class UserProfile extends AppCompatActivity
     * */
 
     //variables
+    private static final String TAG = "Image File";
     Locale local;
     String userID;
     String UserDisplayName;
@@ -72,9 +81,8 @@ public class UserProfile extends AppCompatActivity
     long timeWhenStopped = 0;
     int ToDay;
 
+
     //and objects
-    File imageFile;
-    private ShareActionProvider mShareActionProvider;
     TextView textviewTotalHours;
     static TextView UserName, DayMonday, DayTuesday, DayWednesday;
     static TextView DayThursday, DayFriday, DaySaturday, DaySunday;
@@ -106,6 +114,11 @@ public class UserProfile extends AppCompatActivity
                 pd.dismiss();
             }
         }, delayInMillis);
+
+        //get permission if it's not there yet
+        ActivityCompat.requestPermissions(UserProfile.this,
+                new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
+                1);
 
         //calendar
         cal.setTime(date);
@@ -433,17 +446,40 @@ public class UserProfile extends AppCompatActivity
             builder.show();
 
         } else if (id == R.id.nav_share) {
-            // Fetch and store ShareActionProvider
-            View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
-            Bitmap bitmap = getScreenShot(rootView);
-            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-            sharingIntent.setType("image/jpeg");
-            Uri _uri = Uri.fromFile(imageFile);
-            sharingIntent.putExtra(Intent.EXTRA_STREAM, _uri);
-            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "My work week");
-            startActivity(Intent.createChooser(sharingIntent, "Share via"));
+            //close the drawer
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            assert drawer != null;
+            drawer.closeDrawer(GravityCompat.START);
+            //wait for it to close
+            pd.setTitle("Loading...");
+            pd.setMessage("Please wait.");
+            pd.show();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    //take the screenshot
+                    final View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
+                    //saves the screenshot
+                    getScreenShot(rootView);
+                    //get the screenshot
+                    Bitmap b = loadBitmap(UserProfile.this, "Screenshot.jpeg");
+                    //Bitmap c = Bitmap.createScaledBitmap(b, 150, 150, true);
+                    Uri uriToImage = ProfileHelper.getImageUri(UserProfile.this, b);
+                    //share intent
+                    Intent shareIntent = new Intent();
+                    shareIntent.setAction(Intent.ACTION_SEND);
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, uriToImage);
+                    shareIntent.setType("image/jpeg");
+                    try {
+                        startActivity(Intent.createChooser(shareIntent, "Share via"));
+                    } catch (Exception ex) {
+                        Log.d("ERROR", ex.getMessage());
+                    }
+                    pd.dismiss();
+                }
+            }, 500);
 
-        } else if (id == R.id.nav_send) {
+
 
         } else if(id == R.id.nav_LogoutProfile){
             if(isChronometerRunning){
@@ -461,13 +497,6 @@ public class UserProfile extends AppCompatActivity
         assert drawer != null;
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    // Call to update the share intent
-    private void setShareIntent(Intent shareIntent) {
-        if (mShareActionProvider != null) {
-            mShareActionProvider.setShareIntent(shareIntent);
-        }
     }
     //update graphics on n UI thread
     private void useUIThread() {
@@ -496,40 +525,54 @@ public class UserProfile extends AppCompatActivity
         }.start();
     }
     //take screenshot of the app (working)
-    public Bitmap getScreenShot(View view) {
+    public void getScreenShot(View view) {
         View screenView = view.getRootView();
         screenView.setDrawingCacheEnabled(true);
         Bitmap bitmap = Bitmap.createBitmap(screenView.getDrawingCache());
         screenView.setDrawingCacheEnabled(false);
-        store(bitmap);
-        return bitmap;
+        if (bitmap != null){
+            Log.d(TAG, "Screenshoted");
+        }
+        saveFile(UserProfile.this, bitmap, "Screenshot.jpeg");
     }
     //store the screenshot so that I can use it and send it (not working)
-    public void store(Bitmap bm){
-        String root = Environment.getExternalStorageDirectory().toString();
-        File myDir = new File(root + "/Smart workflow");
-        boolean created = myDir.exists();
-        if (created){
-            Log.d("created" , "True");
-        }else{
-            Log.d("created" , "False");
-        }
-        Random generator = new Random();
-        int n = 10000;
-        n = generator.nextInt(n);
-        String fname = "Image-"+ n +".jpg";
-        imageFile = new File (myDir, fname);
-        if (imageFile.exists ()){ imageFile.delete ();}
+    public static void saveFile(Context context, Bitmap b, String picName){
+        FileOutputStream fos;
         try {
-            FileOutputStream out = new FileOutputStream(imageFile);
-            bm.compress(Bitmap.CompressFormat.JPEG, 90, out);
-            out.flush();
-            out.close();
-
-        } catch (Exception e) {
+            fos = context.openFileOutput(picName, Context.MODE_PRIVATE);
+            b.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.close();
+            Log.d(TAG, "Save Success");
+        }
+        catch (FileNotFoundException e) {
+            Log.d(TAG, "Write file not found");
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            Log.d(TAG, "io exception");
             e.printStackTrace();
         }
 
+    }
+    //get image
+    public static Bitmap loadBitmap(Context context, String picName){
+        Bitmap b = null;
+        FileInputStream fis;
+        try {
+            fis = context.openFileInput(picName);
+            b = BitmapFactory.decodeStream(fis);
+            fis.close();
+
+        }
+        catch (FileNotFoundException e) {
+            Log.d(TAG, "file not found");
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            Log.d(TAG, "io exception");
+            e.printStackTrace();
+        }
+        return b;
     }
 
     //On activity result + crop
@@ -548,24 +591,16 @@ public class UserProfile extends AppCompatActivity
                     }
                     //save to database
                     //if greater than honeycomb run in the backgroud else on main thread
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                        AsyncTask.execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                try{
-                                    storageManagement.SavePicture(CameraPicture, userID);
-                                }catch (Exception e){
-                                    e.printStackTrace();
-                                }
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            try{
+                                storageManagement.SavePicture(CameraPicture, userID);
+                            }catch (Exception e){
+                                e.printStackTrace();
                             }
-                        });
-                    }else{
-                        try{
-                            storageManagement.SavePicture(CameraPicture, userID);
-                        }catch (Exception e){
-                            e.printStackTrace();
                         }
-                    }
+                    });
                 }
 
                 break;
@@ -583,26 +618,45 @@ public class UserProfile extends AppCompatActivity
                     }
                     //save to database
                     //if greater than honeycomb run in the backgroud else on main thread
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                        AsyncTask.execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                try{
-                                    storageManagement.SavePicture(selectedBitmap, userID);
-                                }catch (Exception e){
-                                    e.printStackTrace();
-                                }
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            try{
+                                storageManagement.SavePicture(selectedBitmap, userID);
+                            }catch (Exception e){
+                                e.printStackTrace();
                             }
-                        });
-                    }else{
-                        try{
-                            storageManagement.SavePicture(selectedBitmap, userID);
-                        }catch (Exception e){
-                            e.printStackTrace();
                         }
-                    }
+                    });
                 }
                 break;
+        }
+    }
+
+    //request return _______________________________________________________________________________
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(UserProfile.this, "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
         }
     }
 
