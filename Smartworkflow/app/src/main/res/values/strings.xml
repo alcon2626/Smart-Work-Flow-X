@@ -43,13 +43,13 @@
     <string name="ThisWeekTotalH">Total Hrs:</string>
     <string name="CurrentPayRate">Pay rate:</string>
     <string name="Number00">0.0</string>
-    <string name="PastWeeks">Past weeks</string>
+    <string name="PastWeeks">Information on prior weeks</string>
     <string name="title_activity_profile">Profile</string>
     <string name="title_activity_profile_v1">ProfileV1</string>
-
+    <string name="LastWeekEarnings">Last week earnings</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
+    <string name="PriorEarnings">Prior earnings</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="android_studio">Android Studio</string>
