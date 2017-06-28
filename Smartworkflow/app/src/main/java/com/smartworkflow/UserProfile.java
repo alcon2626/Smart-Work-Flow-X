@@ -28,6 +28,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -74,7 +75,6 @@ public class UserProfile extends AppCompatActivity
     String UserDisplayName;
     public static Double valueDBPayRate = 0.0;
     Double netMoney = 0.0;
-    Timer timer = new Timer();
     long delayInMillis = 2000;
     private double m_Text = 0.0;
     boolean isChronometerRunning = false;
@@ -83,9 +83,12 @@ public class UserProfile extends AppCompatActivity
 
 
     //and objects
+    Timer timer = new Timer();
     TextView textviewTotalHours;
     static TextView UserName, DayMonday, DayTuesday, DayWednesday;
     static TextView DayThursday, DayFriday, DaySaturday, DaySunday;
+    public TextView lastWeekEarnings;
+    public TextView priorOne, priorTwo;
     TextView payRateFromDB;
     TextView netPay;
     static Chronometer ProfileChrono;
@@ -98,7 +101,7 @@ public class UserProfile extends AppCompatActivity
     ProfileHelper helper = new ProfileHelper();
     public ProgressDialog pd;
 
-    //creates most things I would say
+    //creates most things I would say ______________________________________________________________
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -148,8 +151,11 @@ public class UserProfile extends AppCompatActivity
         ProfileChrono = (Chronometer) findViewById(R.id.chronometer1);
         //clock status init
         ClockStatus = (ImageButton) findViewById(R.id.imageButtonClockStatus);
-        //textview netpay
+        //textviews
         netPay = (TextView) findViewById(R.id.textViewNetPay);
+        lastWeekEarnings = (TextView) findViewById(R.id.textViewLastWeekEarnings);
+        priorOne = (TextView) findViewById(R.id.textViewPriorOne);
+        priorTwo = (TextView) findViewById(R.id.textViewPriorTwo);
         //toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -193,93 +199,52 @@ public class UserProfile extends AppCompatActivity
         DayMonday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileHelper.MyAlertBox("Modify Hours", "Enter hours worked for Monday", UserProfile.this, helper.DaysOfWeek[0], userID, weekOfYear);
-                //it takes some time for graphics to load, after load get the values
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        loadAndSetPayNet();
-                    }
-                }, delayInMillis);
-
+                ProfileHelper.timePicker(UserProfile.this, helper.DaysOfWeek[0], userID, weekOfYear);
+                loadAndSetPayNet();
             }
         });
         DayTuesday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileHelper.MyAlertBox("Modify Hours", "Enter hours worked for Tuesday", UserProfile.this, helper.DaysOfWeek[1], userID, weekOfYear);
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        loadAndSetPayNet();
-                    }
-                }, delayInMillis);
-            }
+                ProfileHelper.timePicker(UserProfile.this, helper.DaysOfWeek[1], userID, weekOfYear);
+                loadAndSetPayNet();       }
         });
         DayWednesday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileHelper.MyAlertBox("Modify Hours", "Enter hours worked for Wednesday", UserProfile.this, helper.DaysOfWeek[2], userID, weekOfYear);
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        loadAndSetPayNet();
-                    }
-                }, delayInMillis);
-            }
+                ProfileHelper.timePicker(UserProfile.this, helper.DaysOfWeek[2], userID, weekOfYear);
+                loadAndSetPayNet();            }
         });
         DayThursday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileHelper.MyAlertBox("Modify Hours", "Enter hours worked for Thursday", UserProfile.this, helper.DaysOfWeek[3], userID, weekOfYear);
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        loadAndSetPayNet();
-                    }
-                }, delayInMillis);
-            }
+                ProfileHelper.timePicker(UserProfile.this, helper.DaysOfWeek[3], userID, weekOfYear);
+                loadAndSetPayNet();           }
         });
         DayFriday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileHelper.MyAlertBox("Modify Hours", "Enter hours worked for Friday", UserProfile.this, helper.DaysOfWeek[4], userID, weekOfYear);
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        loadAndSetPayNet();
-                    }
-                }, delayInMillis);
-            }
+                ProfileHelper.timePicker(UserProfile.this, helper.DaysOfWeek[4], userID, weekOfYear);
+                loadAndSetPayNet();           }
         });
         DaySaturday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileHelper.MyAlertBox("Modify Hours", "Enter hours worked for Saturday", UserProfile.this, helper.DaysOfWeek[5], userID, weekOfYear);
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        loadAndSetPayNet();
-                    }
-                }, delayInMillis);
+                ProfileHelper.timePicker(UserProfile.this, helper.DaysOfWeek[5], userID, weekOfYear);
+                loadAndSetPayNet();
             }
         });
         DaySunday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileHelper.MyAlertBox("Modify Hours", "Enter hours worked for Sunday", UserProfile.this, helper.DaysOfWeek[6], userID, weekOfYear);
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        loadAndSetPayNet();
-                    }
-                }, delayInMillis);
+                ProfileHelper.timePicker(UserProfile.this, helper.DaysOfWeek[6], userID, weekOfYear);
+                loadAndSetPayNet();
             }
         });
 
     }
 
-
+    //Refresh  _____________________________________________________________________________________
     private void loadAndSetPayNet() {
         //it takes some time for graphics to load, after load get the values
         timer.schedule(new TimerTask() {
@@ -289,11 +254,13 @@ public class UserProfile extends AppCompatActivity
                 Log.d("Rate from DB", valueDBPayRate.toString());
                 netMoney = valueDBPayRate * helper.DayHours;
                 Log.d("Total money", netMoney.toString());
+                //save total to the given week
                 useUIThread();
             }
-        }, delayInMillis);
+        }, 5000);
+        //Display prior weeks earnings here
     }
-
+    //Stop Timer ___________________________________________________________________________________
     private void StopTimer(int weekOfYear, String Day){
         ProfileChrono.stop();
         timeWhenStopped = UserProfile.ProfileChrono.getBase() - SystemClock.elapsedRealtime();
@@ -304,6 +271,7 @@ public class UserProfile extends AppCompatActivity
         loadAndSetPayNet();
         isChronometerRunning  = false;
     }
+    //Start Timer __________________________________________________________________________________
     private void StartTimer(int weekOfYear, String Day){
         dbmanager.GetTime(userID, weekOfYear, Day);
         Log.d("Clock ", "IN");
@@ -312,7 +280,7 @@ public class UserProfile extends AppCompatActivity
         isChronometerRunning  = true;
     }
 
-    //ask first exit second time pressed
+    //ask first, exit second time pressed ___________________________________________________________
     private Boolean exit = false;
     @Override
     public void onBackPressed() {
@@ -344,14 +312,14 @@ public class UserProfile extends AppCompatActivity
             }
         }
     }
-
+    //Create Options _______________________________________________________________________________
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.user_profile, menu);
         return true;
     }
-
+    //Options Select _______________________________________________________________________________
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -366,7 +334,7 @@ public class UserProfile extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-
+    //Navigation Item Select _______________________________________________________________________
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -422,7 +390,7 @@ public class UserProfile extends AppCompatActivity
 
             // Set up the input
             final EditText inputpayrate = new EditText(this);
-            // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+            // Specify the type of input expected; sets the input as a password, and will mask the text
             inputpayrate.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
             builder.setView(inputpayrate);
 
@@ -458,7 +426,8 @@ public class UserProfile extends AppCompatActivity
                 @Override
                 public void run() {
                     //take the screenshot
-                    final View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
+                    final View rootView = getWindow().getDecorView().
+                            findViewById(android.R.id.content);
                     //saves the screenshot
                     getScreenShot(rootView);
                     //get the screenshot
@@ -498,7 +467,7 @@ public class UserProfile extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    //update graphics on n UI thread
+    //update graphics on n UI thread________________________________________________________________
     private void useUIThread() {
         new Thread() {
             public void run() {
@@ -524,7 +493,7 @@ public class UserProfile extends AppCompatActivity
             }
         }.start();
     }
-    //take screenshot of the app (working)
+    //take screenshot of the app (working)__________________________________________________________
     public void getScreenShot(View view) {
         View screenView = view.getRootView();
         screenView.setDrawingCacheEnabled(true);
@@ -535,7 +504,7 @@ public class UserProfile extends AppCompatActivity
         }
         saveFile(UserProfile.this, bitmap, "Screenshot.jpeg");
     }
-    //store the screenshot so that I can use it and send it (not working)
+    //store the screenshot so that I can use it and send it (not working)___________________________
     public static void saveFile(Context context, Bitmap b, String picName){
         FileOutputStream fos;
         try {
@@ -554,7 +523,7 @@ public class UserProfile extends AppCompatActivity
         }
 
     }
-    //get image
+    //Get Image ____________________________________________________________________________________
     public static Bitmap loadBitmap(Context context, String picName){
         Bitmap b = null;
         FileInputStream fis;
@@ -575,7 +544,7 @@ public class UserProfile extends AppCompatActivity
         return b;
     }
 
-    //On activity result + crop
+    //On activity result + crop ____________________________________________________________________
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
         switch (requestCode) {
@@ -650,7 +619,8 @@ public class UserProfile extends AppCompatActivity
 
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
-                    Toast.makeText(UserProfile.this, "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UserProfile.this, "Permission denied to read your External " +
+                            "storage", Toast.LENGTH_SHORT).show();
                 }
                 return;
             }

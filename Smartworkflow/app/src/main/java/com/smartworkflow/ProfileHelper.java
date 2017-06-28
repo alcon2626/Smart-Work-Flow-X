@@ -1,14 +1,21 @@
 package com.smartworkflow;
 
+import android.app.AlertDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.InputType;
+import android.text.Layout;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Locale;
@@ -24,6 +31,8 @@ import java.util.concurrent.TimeUnit;
  */
 
 class ProfileHelper{
+    static int userHour = 0;
+    static int userMinute = 0;
     private Locale local;
     static long duration = 0;
     Double DayHours = 0.0;
@@ -68,26 +77,33 @@ class ProfileHelper{
 
         Log.d("Total hours", DayHours.toString());
     }
-
-    static void MyAlertBox(String title, String mymessage, Context context, final String day, final String userID, final int weekOfYear)
-    {
-        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context);
-        builder.setTitle(title);
-        builder.setMessage(mymessage);
-
-        // Set up the input
-        final EditText inputpayrate = new EditText(context);
-        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-        inputpayrate.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        builder.setView(inputpayrate);
-
-        // Set up the buttons
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+    //dialogBox as a time picker____________________________________________________________________
+    static void timePicker(final Context context, final String day, final String userID, final int weekOfYear){
+        TimePickerDialog mTimePicker;
+        mTimePicker = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                userHour = selectedHour;
+                userMinute = selectedMinute;
+                Log.d("MINUTES", String.valueOf(userMinute));
+                Log.d("HOURS", String.valueOf(userHour));
+                String valueHoursDouble = String.valueOf(userHour);
+                String valueMinutesDouble = String.valueOf(userMinute);
+                Log.d("V MINUTES", valueMinutesDouble);
+                Log.d("V HOURS", valueHoursDouble);
+                String allTogether;
+                if(userMinute < 10){
+                    allTogether = valueHoursDouble +'.'+'0'+ valueMinutesDouble;
+                }else{
+                    allTogether = valueHoursDouble +'.'+ valueMinutesDouble;
+                }
+                Log.d("All", allTogether);
+
                 DB_Managment dbmanager = new DB_Managment();
                 long timeWhenStopped = 0;
-                Double m_Text = Double.parseDouble(inputpayrate.getText().toString());
+                Double m_Text = Double.parseDouble(allTogether);
+                Log.d("m_Text Double", m_Text.toString());
+
                 String time = doubleToTimeFormat(m_Text);
                 Log.d("finalResult", time);
 
@@ -129,16 +145,11 @@ class ProfileHelper{
                         break;
                 }
 
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
 
-        builder.show();
+            }
+        }, 0, 0, true);//Yes 24 hour time
+        mTimePicker.setTitle("Select Time");
+        mTimePicker.show();
     }
 
     static private String doubleToTimeFormat(Double value){
@@ -149,24 +160,33 @@ class ProfileHelper{
         Log.d("splitter", splitter);
         StringTokenizer defaultTokenizer = new StringTokenizer(splitter,".");
 
+
         String hours = defaultTokenizer.nextToken();
+        Log.d("SV HOURS", hours);
         if (hours.length() == 1){
             hours = "0" + hours;
             hoursH = Integer.parseInt(hours);
+            Log.d("int hours", String.valueOf(hoursH));
+        }else{
+            hoursH = Integer.parseInt(hours);
         }
         String minutes = defaultTokenizer.nextToken();
+        Log.d("SV MINUTES", minutes);
         if (minutes.length()== 1){
-            minutes = "0" + minutes;
-            hoursH = Integer.parseInt(hours);
+            minutes =  minutes  + "0";
+            minutesM = Integer.parseInt(minutes);
+            Log.d("int min", String.valueOf(minutesM));
         }else{
-            minutes = minutes.substring(0, 2);
             minutesM = Integer.parseInt(minutes);
         }
+        Log.d("Duration", String.valueOf(hoursH+"."+minutesM));
         duration = 3600 * hoursH + 60 * minutesM + secondS;
         duration = TimeUnit.MILLISECONDS.convert(duration, TimeUnit.SECONDS);
         System.out.println("time in millis = " + duration);
         return hours+":"+ minutes + ":" + "00";
     }
+
+
     static public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);

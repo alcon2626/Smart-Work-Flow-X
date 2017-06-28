@@ -1,5 +1,7 @@
 package com.smartworkflow;
 
+import android.content.Intent;
+
 import com.firebase.client.Firebase;
 
 /**
@@ -11,5 +13,6 @@ public class SmartWorkflow extends android.app.Application {
     public void onCreate() {
         super.onCreate();
         Firebase.setAndroidContext(this);
+        startService(new Intent(this, SmartWorkflowService.class));
     }
 }

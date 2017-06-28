@@ -159,7 +159,7 @@ public class DB_Managment  extends Activity {
 
 
     //get double payrate
-    public Double getValuePayRate() {
-        return valuePayRate;
+    public void getPriorWeekEarnings(int week) {
+
     }
 }
