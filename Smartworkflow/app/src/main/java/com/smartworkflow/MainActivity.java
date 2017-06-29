@@ -1,5 +1,6 @@
 package com.smartworkflow;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -19,8 +21,10 @@ import android.widget.Toast;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.annotations.NotNull;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -38,7 +42,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
     private static final int RC_SIGN_IN = 1;
-    TextView Register_User;
+    private AdView mAdView;
+    ImageButton userSingUp;
     ImageButton UserSignIn, GooglesignIn;
     FirebaseAuth aunthenticator;
     EditText UserEmail;
@@ -51,22 +56,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            super.setTheme(R.style.MyAppThemeCustome);
-        }
+        super.setTheme(R.style.MyAppThemeCustome);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-
-
-        //init adds
-        AdRequest request = new AdRequest.Builder()
-                .addTestDevice("D599B82756D2C99F4C2326F0BFF81C67")  // An example device ID
-                .setGender(AdRequest.GENDER_MALE)
-                .build();
-        AdView mAdView = (AdView) findViewById(R.id.adView);
-        assert mAdView != null;
-        mAdView.loadAd(request);
+        //ad
+        MobileAds.initialize(this, "ca-app-pub-1762917079825621/4741555998");
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
         //init user authenticator
         aunthenticator = FirebaseAuth.getInstance();
         // Configure Google Sign In
@@ -113,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     protected void onStart() {
         super.onStart();
         aunthenticator.addAuthStateListener(mAuthListener);
-        Register_User = (TextView) findViewById(R.id.NewUser);
+        userSingUp = (ImageButton) findViewById(R.id.imageButtonUserSignUp);
         UserSignIn = (ImageButton) findViewById(R.id.imageButtonSignIn);
         GooglesignIn=(ImageButton)findViewById(R.id.imageButtonGoogleSignIn);
         UserEmail = (EditText) findViewById(R.id.SignInEmail);
@@ -123,21 +121,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         //listeners
         //registration
-        Register_User.setOnClickListener(new View.OnClickListener() {
+        userSingUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent UserRegistration = new Intent(MainActivity.this, RegisterUser.class);
                 startActivity(UserRegistration);
-
             }
         });
         //sign in from user button not google
         UserSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    v.isActivated();
-                }
+                v.isActivated();
                 if (UserEmail.getText().toString().equals("") || Userpassword.getText().toString().equals("")) {
                     Toast.makeText(MainActivity.this, "You did not enter a username or password", Toast.LENGTH_SHORT).show();
                     return;
@@ -233,6 +228,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
                 // Google Sign In failed, update UI appropriately
                 // ...
+                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                alertDialog.setTitle("Alert");
+                alertDialog.setMessage("Google Sign In failed");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
             }
         }
     }

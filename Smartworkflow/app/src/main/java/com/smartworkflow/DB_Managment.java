@@ -23,6 +23,7 @@ public class DB_Managment  extends Activity {
 
     //track time
     Long Time;
+    Double earnings = 0.0D;
     ProfileHelper helper = new ProfileHelper();
     private Double valuePayRate;
     Locale local;
@@ -158,8 +159,49 @@ public class DB_Managment  extends Activity {
     }
 
 
-    //get double payrate
-    public void getPriorWeekEarnings(int week) {
+    //save earnings for a given week
+    public void saveWeekEarnings(String userid, int weekOfYear, Double earnings) {
+        DatabaseReference UserReference = myRef.child(userid+"/"+weekOfYear+"/"+"Earnings");
+        UserReference.setValue(earnings);
+    }
+    //get earnings for a given week
+    void getWeekEarnings(String userid, int weekOfYear, final int type) {
+        DatabaseReference UserReference = myRef.child(userid+"/"+weekOfYear+"/"+"Earnings");
+        UserReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                earnings = dataSnapshot.getValue(Double.class);
+                if(earnings == null){
+                    earnings = 0.0D;
+                }
+                Double roundOff = Math.round(earnings * 100.0) / 100.0;
+                Log.d("Reading Earn", "Sucess");
+                switch (type){
+                    case 1:
+                        //current week
+                        UserProfile.netPay.setText(String.format(local, roundOff.toString()));
+                        break;
+                    case 2:
+                        //do something
+                        UserProfile.lastWeekEarnings.setText(String.format(local, roundOff.toString()));
+                        break;
+                    case 3:
+                        //do something
+                        UserProfile.priorOne.setText(String.format(local, roundOff.toString()));
+                        break;
+                    case 4:
+                        //do something
+                        UserProfile.priorTwo.setText(String.format(local, roundOff.toString()));
+                        break;
+                }
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                earnings = 0.0D;
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", databaseError.toException());
+            }
+        });
     }
 }

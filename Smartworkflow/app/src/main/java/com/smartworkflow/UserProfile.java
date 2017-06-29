@@ -1,9 +1,8 @@
 package com.smartworkflow;
 
-import android.*;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,7 +10,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -28,7 +26,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,13 +33,14 @@ import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -57,7 +55,7 @@ public class UserProfile extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     /*Map
     * onCreate() creates all variables plus graphics.
-    * loadAndSetPayNet() it delays the set pay function for 2 seconds, does the final calc and updates GUI, it can be called from anywhere.
+    * refreshValues() it delays the set pay function for 2 seconds, does the final calc and updates GUI, it can be called from anywhere.
     * StopTimer() stops the Chronometer
     * StartTimer() starts the Chronometer
     * onBackPressed() sends you back outside after warning you
@@ -83,14 +81,15 @@ public class UserProfile extends AppCompatActivity
 
 
     //and objects
+    private AdView mAdView;
     Timer timer = new Timer();
     TextView textviewTotalHours;
     static TextView UserName, DayMonday, DayTuesday, DayWednesday;
     static TextView DayThursday, DayFriday, DaySaturday, DaySunday;
-    public TextView lastWeekEarnings;
-    public TextView priorOne, priorTwo;
+    static TextView lastWeekEarnings;
+    static TextView priorOne, priorTwo;
     TextView payRateFromDB;
-    TextView netPay;
+    static TextView netPay;
     static Chronometer ProfileChrono;
     static ImageView Profile_Image;
     ImageButton ClockStatus;
@@ -100,6 +99,7 @@ public class UserProfile extends AppCompatActivity
     DB_Managment dbmanager = new DB_Managment(); // handle data
     ProfileHelper helper = new ProfileHelper();
     public ProgressDialog pd;
+    final int weekOfYear = cal.get(Calendar.WEEK_OF_YEAR);
 
     //creates most things I would say ______________________________________________________________
     @Override
@@ -107,6 +107,13 @@ public class UserProfile extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
+        //ad
+        MobileAds.initialize(this, "ca-app-pub-1762917079825621/4741555998");
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+        //loading
         pd = new ProgressDialog(UserProfile.this);
         pd.setTitle("Loading...");
         pd.setMessage("Please wait.");
@@ -125,7 +132,6 @@ public class UserProfile extends AppCompatActivity
 
         //calendar
         cal.setTime(date);
-        final int weekOfYear = cal.get(Calendar.WEEK_OF_YEAR);
         ToDay = date.getDay()-1;
         final String Day = helper.DaysOfWeek[ToDay];
         //get extras
@@ -194,71 +200,70 @@ public class UserProfile extends AppCompatActivity
         //loading image from database for profile
         Profile_Image.setImageResource(R.drawable.genericperson);
         storageManagement.RetrievePicture(userID);
-        loadAndSetPayNet();
+        refreshValues();
 
         DayMonday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ProfileHelper.timePicker(UserProfile.this, helper.DaysOfWeek[0], userID, weekOfYear);
-                loadAndSetPayNet();
-            }
+                refreshValues();}
         });
         DayTuesday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ProfileHelper.timePicker(UserProfile.this, helper.DaysOfWeek[1], userID, weekOfYear);
-                loadAndSetPayNet();       }
+                refreshValues();       }
         });
         DayWednesday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ProfileHelper.timePicker(UserProfile.this, helper.DaysOfWeek[2], userID, weekOfYear);
-                loadAndSetPayNet();            }
+                refreshValues();            }
         });
         DayThursday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ProfileHelper.timePicker(UserProfile.this, helper.DaysOfWeek[3], userID, weekOfYear);
-                loadAndSetPayNet();           }
+                refreshValues();           }
         });
         DayFriday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ProfileHelper.timePicker(UserProfile.this, helper.DaysOfWeek[4], userID, weekOfYear);
-                loadAndSetPayNet();           }
+                refreshValues();           }
         });
         DaySaturday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ProfileHelper.timePicker(UserProfile.this, helper.DaysOfWeek[5], userID, weekOfYear);
-                loadAndSetPayNet();
-            }
+                refreshValues();}
         });
         DaySunday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ProfileHelper.timePicker(UserProfile.this, helper.DaysOfWeek[6], userID, weekOfYear);
-                loadAndSetPayNet();
-            }
+                refreshValues();}
         });
 
     }
 
     //Refresh  _____________________________________________________________________________________
-    private void loadAndSetPayNet() {
+    private void refreshValues() {
+        dbmanager.getWeekEarnings(userID, weekOfYear, 1);
+        dbmanager.getWeekEarnings(userID, weekOfYear - 1, 2);
+        dbmanager.getWeekEarnings(userID, weekOfYear - 2, 3);
+        dbmanager.getWeekEarnings(userID, weekOfYear - 3, 4);
         //it takes some time for graphics to load, after load get the values
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 helper.setPayNet();
-                Log.d("Rate from DB", valueDBPayRate.toString());
                 netMoney = valueDBPayRate * helper.DayHours;
-                Log.d("Total money", netMoney.toString());
                 //save total to the given week
+                dbmanager.saveWeekEarnings(userID, weekOfYear, netMoney);
                 useUIThread();
             }
         }, 5000);
-        //Display prior weeks earnings here
     }
     //Stop Timer ___________________________________________________________________________________
     private void StopTimer(int weekOfYear, String Day){
@@ -268,7 +273,7 @@ public class UserProfile extends AppCompatActivity
         dbmanager.SaveTime(userID, timeWhenStopped, weekOfYear, Day);
         ClockStatus.setImageResource(R.drawable.clockout);
         dbmanager.PopulateDaysAtGlance(userID, weekOfYear); //loads time ASAP for Days
-        loadAndSetPayNet();
+        refreshValues();
         isChronometerRunning  = false;
     }
     //Start Timer __________________________________________________________________________________
@@ -329,6 +334,8 @@ public class UserProfile extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent UserRegistration = new Intent(UserProfile.this, SettingsActivity.class);
+            startActivity(UserRegistration);
             return true;
         }
 
@@ -372,7 +379,7 @@ public class UserProfile extends AppCompatActivity
             //reload everything
             dbmanager.PopulateDaysAtGlance(userID, weekOfYear); //loads time ASAP for Days
             storageManagement.RetrievePicture(userID);
-            loadAndSetPayNet();
+            refreshValues();
 
 
         } else if (id == R.id.nav_resetclock) {
@@ -401,7 +408,7 @@ public class UserProfile extends AppCompatActivity
                     m_Text = Double.parseDouble(inputpayrate.getText().toString());
                     dbmanager.setPayRate(userID, m_Text);
                     valueDBPayRate = m_Text;
-                    loadAndSetPayNet();
+                    refreshValues();
                 }
             });
             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -475,15 +482,12 @@ public class UserProfile extends AppCompatActivity
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Double roundOff = Math.round(netMoney * 100.0) / 100.0;
-                            netPay.setText(String.format(local, roundOff.toString()));
                             dbmanager.getPayRate(userID);
                             payRateFromDB.setText(String.format(local, valueDBPayRate.toString()));
-                            roundOff = Math.round(helper.DayHours * 100.0) / 100.0;
+                            Double roundOff = Math.round(helper.DayHours * 100.0) / 100.0;
                             textviewTotalHours.setText(String.format(local, roundOff.toString()));
                             payRateFromDB.setText(String.format(local, valueDBPayRate.toString()));
                             helper.DayHours = 0.0D;
-                            netMoney = 0.0D;
                         }
                     });
                     Thread.sleep(300);
