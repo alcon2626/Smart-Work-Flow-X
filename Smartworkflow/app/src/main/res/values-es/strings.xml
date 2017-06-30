@@ -1,0 +1,124 @@
+<resources>
+    <string name="app_name">Smart workflow</string>
+    <string name="Welcome">Bienvenido a Smart Workflow</string>
+    <string name="SignInHelpPassword">Introduzca su contraseña</string>
+    <string name="SignInHelpEmail">Introduzca su correo</string>
+    <string name="SignupHelpPassword">Contraseña</string>
+    <string name="SignupHelpEmail">Correo</string>
+    <string name="RegisterNewUser">Unete</string>
+    <string name="title_activity_user_profile">Perfil de Usuario </string>
+    <string name="EnterEmail">Introduzca su correo</string>
+    <string name="EnterPassword">Introduzca su contraseña</string>
+    <string name="SetUpWelcomeUser">Bienvenido a Smart workflow, vamos a comenzar.</string>
+    <string name="Name">Introduzca su nombre</string>
+    <string name="Username">Nombre</string>
+    <string name="ClockStatus">Estado del Reloj&#8230;</string>
+    <string name="Profile">Perfil</string>
+    <string name="CurrentTime">Hora:</string>
+    <string name="WorkedTime">Trabajado hoy:</string>
+    <string name="UpdatePicture">Tomar Foto</string>
+    <string name="UpdateFromGallery">Seleccionar</string>
+    <string name="InformationAtGlance">Información rápida</string>
+    <string name="Monday">Lunes</string>
+    <string name="Tuesday">Martes</string>
+    <string name="Wednesday">Miercoles</string>
+    <string name="Thursday">Jueves</string>
+    <string name="Friday">Viernes</string>
+    <string name="Saturday">Sabado</string>
+    <string name="Sunday">Domingo</string>
+    <string name="Time00">00:00:00</string>
+    <string name="LogOut">Salir</string>
+    <string name="SetPayRate">Establecer pago</string>
+    <string name="ResetClock">Reiniciar reloj</string>
+    <string name="Communicate">Comunicar</string>
+    <string name="Share">Compartir</string>
+    <string name="Net">Salario:</string>
+    <string name="Refresh">Refrescar</string>
+    <string name="ThisWeekTotalH">Total Hrs:</string>
+    <string name="CurrentPayRate">Tarifa S:</string>
+    <string name="Number00">0.0</string>
+    <string name="PastWeeks">Información de semanas anteriores</string>
+    <string name="title_activity_profile">Perfil</string>
+    <string name="title_activity_profile_v1">PerfilV1</string>
+    <string name="LastWeekEarnings">Salario semana pasada</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="PriorEarnings">Salarios anteriores</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="android_studio">Android Studio</string>
+    <string name="android_studio_android_com">android.studio@android.com</string>
+    <string name="title_activity_settings">Ajustes</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_title_social_recommendations">Habilitar recomendaciones sociales</string>
+    <string name="pref_description_social_recommendations">Recomendaciones para personas a contactar
+        Basado en el historial de mensajes
+    </string>
+
+    <string name="pref_title_display_name">Nombre a mostrar</string>
+    <string name="pref_default_display_name">John Smith</string>
+
+    <string name="pref_title_add_friends_to_messages">Añadir amigos a los mensajes</string>
+    <string-array name="pref_example_list_titles">
+        <item>Siempre</item>
+        <item>Cuando sea posible</item>
+        <item>Nunca</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync">Datos &amp; sync</string>
+
+    <string name="pref_title_sync_frequency">Sync frequencia</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>15 minutos</item>
+        <item>30 minutos</item>
+        <item>1 hora</item>
+        <item>3 horas</item>
+        <item>6 horas</item>
+        <item>Nunca</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+
+    <string-array name="list_preference_entries">
+        <item>Entry 1</item>
+        <item>Entry 2</item>
+        <item>Entry 3</item>
+    </string-array>
+
+    <string-array name="list_preference_entry_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="multi_select_list_preference_default_value" />
+
+    <string name="pref_title_system_sync_settings">Sistema sync ajustes</string>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications">Notificaciones</string>
+
+    <string name="pref_title_new_message_notifications">Nuevas notificaciones de mensajes</string>
+
+    <string name="pref_title_ringtone">Ringtone</string>
+    <string name="pref_ringtone_silent">Silencio</string>
+
+    <string name="pref_title_vibrate">Vibrar</string>
+</resources>
