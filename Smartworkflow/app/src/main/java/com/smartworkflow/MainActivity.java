@@ -2,26 +2,21 @@ package com.smartworkflow;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
-
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.annotations.NotNull;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -44,8 +39,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private static final int RC_SIGN_IN = 1;
     private AdView mAdView;
     ImageButton userSingUp;
-    ImageButton UserSignIn, GooglesignIn;
+    ImageButton UserSignIn;
     FirebaseAuth aunthenticator;
+    Button GooglesignIn, Facebooksignin;
     EditText UserEmail;
     EditText Userpassword;
     String DisplayName;
@@ -113,7 +109,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         aunthenticator.addAuthStateListener(mAuthListener);
         userSingUp = (ImageButton) findViewById(R.id.imageButtonUserSignUp);
         UserSignIn = (ImageButton) findViewById(R.id.imageButtonSignIn);
-        GooglesignIn=(ImageButton)findViewById(R.id.imageButtonGoogleSignIn);
+        GooglesignIn = (Button)findViewById(R.id.sign_in_button_Google);
+        Facebooksignin = (Button) findViewById(R.id.login_button_Facebook);
         UserEmail = (EditText) findViewById(R.id.SignInEmail);
         Userpassword = (EditText) findViewById(R.id.SignInPassword);
 
