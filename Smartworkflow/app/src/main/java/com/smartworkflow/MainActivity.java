@@ -8,12 +8,16 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
+
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -31,6 +35,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -40,8 +45,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private AdView mAdView;
     ImageButton userSingUp;
     ImageButton UserSignIn;
+    LoginButton facebookSignin;
     FirebaseAuth aunthenticator;
-    Button GooglesignIn, Facebooksignin;
+    ImageButton GooglesignIn;
     EditText UserEmail;
     EditText Userpassword;
     String DisplayName;
@@ -100,17 +106,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             }
         };
 
-        findViewById(R.id.imageButtonGoogleSignIn).setOnClickListener(this);
+        findViewById(R.id.imageButtonGooglesignin).setOnClickListener(this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         aunthenticator.addAuthStateListener(mAuthListener);
-        userSingUp = (ImageButton) findViewById(R.id.imageButtonUserSignUp);
+        userSingUp = (ImageButton) findViewById(R.id.ImageButtonRegister);
         UserSignIn = (ImageButton) findViewById(R.id.imageButtonSignIn);
-        GooglesignIn = (Button)findViewById(R.id.sign_in_button_Google);
-        Facebooksignin = (Button) findViewById(R.id.login_button_Facebook);
+        GooglesignIn = (ImageButton)findViewById(R.id.imageButtonGooglesignin);
         UserEmail = (EditText) findViewById(R.id.SignInEmail);
         Userpassword = (EditText) findViewById(R.id.SignInPassword);
 
@@ -123,6 +128,30 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             public void onClick(View v) {
                 Intent UserRegistration = new Intent(MainActivity.this, RegisterUser.class);
                 startActivity(UserRegistration);
+            }
+        });
+        //sign in with facebook
+        // Initialize Facebook Login button
+        CallbackManager mCallbackManager = CallbackManager.Factory.create();
+        facebookSignin = (LoginButton) findViewById(R.id.login_button);
+        facebookSignin.setReadPermissions("email", "public_profile");
+        facebookSignin.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Log.d("facebook:onSuccess:", loginResult.toString());
+                handleFacebookAccessToken(loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d("facebook", "onCancel");
+                // ...
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.d("facebook:onError", error.getMessage());
+                // ...
             }
         });
         //sign in from user button not google
@@ -198,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.imageButtonGoogleSignIn:
+            case R.id.imageButtonGooglesignin:
                 signIn();
                 break;
             // ...
@@ -238,6 +267,31 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             }
         }
     }
+    // [START auth_with_facebook]
+    private void handleFacebookAccessToken(AccessToken token) {
+        Log.d("handleFacebookAccT:", token.toString());
+        // [START_EXCLUDE silent]
+        // [END_EXCLUDE]
+
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        aunthenticator.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("signInWithCredential:", "success");
+                            FirebaseUser user = aunthenticator.getCurrentUser();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("signIn:failure", task.getException());
+                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+    // [END auth_with_facebook]
 
     //firebase authenticate
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {

@@ -36,7 +36,7 @@ class ProfileHelper{
     private Locale local;
     static long duration = 0;
     Double DayHours = 0.0;
-    String DaysOfWeek[] = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+    String DaysOfWeek[] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
     private Double daysToDouble(String day){
         Double minutescoverted = 0.0;
@@ -79,36 +79,29 @@ class ProfileHelper{
     }
     //dialogBox as a time picker____________________________________________________________________
     static void timePicker(final Context context, final String day, final String userID, final int weekOfYear){
+        Log.d("Today passed", day);
         TimePickerDialog mTimePicker;
         mTimePicker = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                 userHour = selectedHour;
                 userMinute = selectedMinute;
-                Log.d("MINUTES", String.valueOf(userMinute));
-                Log.d("HOURS", String.valueOf(userHour));
                 String valueHoursDouble = String.valueOf(userHour);
                 String valueMinutesDouble = String.valueOf(userMinute);
-                Log.d("V MINUTES", valueMinutesDouble);
-                Log.d("V HOURS", valueHoursDouble);
                 String allTogether;
                 if(userMinute < 10){
                     allTogether = valueHoursDouble +'.'+'0'+ valueMinutesDouble;
                 }else{
                     allTogether = valueHoursDouble +'.'+ valueMinutesDouble;
                 }
-                Log.d("All", allTogether);
 
                 DB_Managment dbmanager = new DB_Managment();
                 long timeWhenStopped = 0;
                 Double m_Text = Double.parseDouble(allTogether);
-                Log.d("m_Text Double", m_Text.toString());
 
                 String time = doubleToTimeFormat(m_Text);
-                Log.d("finalResult", time);
 
                 timeWhenStopped = duration * -1;
-                Log.d("timeWhenStopped", String.valueOf(timeWhenStopped));
                 switch(day){
                     //setters
                     case "Monday":

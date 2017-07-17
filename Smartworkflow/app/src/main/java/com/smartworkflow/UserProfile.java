@@ -93,7 +93,6 @@ public class UserProfile extends AppCompatActivity
     static Chronometer ProfileChrono;
     static ImageView Profile_Image;
     ImageButton ClockStatus;
-    Date date = new Date();
     Calendar cal = Calendar.getInstance();
     Storage_Management storageManagement = new Storage_Management();// handle picture
     DB_Managment dbmanager = new DB_Managment(); // handle data
@@ -131,9 +130,10 @@ public class UserProfile extends AppCompatActivity
                 1);
 
         //calendar
-        cal.setTime(date);
-        ToDay = date.getDay()-1;
+        ToDay = cal.get(Calendar.DAY_OF_WEEK) - 1;
+        Log.d("Today", String.valueOf(ToDay));
         final String Day = helper.DaysOfWeek[ToDay];
+        Log.d("Today", Day);
         //get extras
         Intent intent = getIntent();
         userID = intent.getStringExtra("USERID");
@@ -202,43 +202,43 @@ public class UserProfile extends AppCompatActivity
         storageManagement.RetrievePicture(userID);
         refreshValues();
 
-        DayMonday.setOnClickListener(new View.OnClickListener() {
+        DaySunday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ProfileHelper.timePicker(UserProfile.this, helper.DaysOfWeek[0], userID, weekOfYear);
                 refreshValues();}
         });
-        DayTuesday.setOnClickListener(new View.OnClickListener() {
+        DayMonday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ProfileHelper.timePicker(UserProfile.this, helper.DaysOfWeek[1], userID, weekOfYear);
+                refreshValues();}
+        });
+        DayTuesday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProfileHelper.timePicker(UserProfile.this, helper.DaysOfWeek[2], userID, weekOfYear);
                 refreshValues();       }
         });
         DayWednesday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileHelper.timePicker(UserProfile.this, helper.DaysOfWeek[2], userID, weekOfYear);
+                ProfileHelper.timePicker(UserProfile.this, helper.DaysOfWeek[3], userID, weekOfYear);
                 refreshValues();            }
         });
         DayThursday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileHelper.timePicker(UserProfile.this, helper.DaysOfWeek[3], userID, weekOfYear);
+                ProfileHelper.timePicker(UserProfile.this, helper.DaysOfWeek[4], userID, weekOfYear);
                 refreshValues();           }
         });
         DayFriday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileHelper.timePicker(UserProfile.this, helper.DaysOfWeek[4], userID, weekOfYear);
+                ProfileHelper.timePicker(UserProfile.this, helper.DaysOfWeek[5], userID, weekOfYear);
                 refreshValues();           }
         });
         DaySaturday.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ProfileHelper.timePicker(UserProfile.this, helper.DaysOfWeek[5], userID, weekOfYear);
-                refreshValues();}
-        });
-        DaySunday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ProfileHelper.timePicker(UserProfile.this, helper.DaysOfWeek[6], userID, weekOfYear);
@@ -345,8 +345,8 @@ public class UserProfile extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        final int weekOfYear = cal.get(Calendar.WEEK_OF_YEAR);
-        int ToDay = date.getDay()-1;
+        ToDay = cal.get(Calendar.DAY_OF_WEEK) - 1;
+        Log.d("Today 2", String.valueOf(ToDay));
         final String Day = helper.DaysOfWeek[ToDay];
         // Handle navigation view item clicks here.
         int id = item.getItemId();

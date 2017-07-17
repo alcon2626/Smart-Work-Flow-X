@@ -1,4 +1,5 @@
 <resources>
+<string name="Register">Register</string>
 <string name="fb_login_protocol_scheme">fb442027039499004</string>
 <string name="facebook_app_id">442027039499004</string>
 <string name="app_name">Smart workflow</string>
