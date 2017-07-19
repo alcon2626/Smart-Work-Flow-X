@@ -2,10 +2,14 @@ package com.smartworkflow;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -40,6 +44,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
     private static final int RC_SIGN_IN = 1;
     private AdView mAdView;
@@ -55,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     String ClienID = "390858261168-u6ju4oioebajagm6ht4kb0v40o5dq14k.apps.googleusercontent.com";
     GoogleApiClient mGoogleApiClient;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    CallbackManager mCallbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +89,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
         //user sign in listener
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = aunthenticator.getCurrentUser();
+
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -132,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         });
         //sign in with facebook
         // Initialize Facebook Login button
-        CallbackManager mCallbackManager = CallbackManager.Factory.create();
+        mCallbackManager = CallbackManager.Factory.create();
         facebookSignin = (LoginButton) findViewById(R.id.login_button);
         facebookSignin.setReadPermissions("email", "public_profile");
         facebookSignin.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
@@ -154,6 +166,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 // ...
             }
         });
+
         //sign in from user button not google
         UserSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -266,6 +279,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 alertDialog.show();
             }
         }
+
+        // Pass the activity result back to the Facebook SDK
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
     // [START auth_with_facebook]
     private void handleFacebookAccessToken(AccessToken token) {
@@ -281,7 +297,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("signInWithCredential:", "success");
-                            FirebaseUser user = aunthenticator.getCurrentUser();
+                            //FirebaseUser user = aunthenticator.getCurrentUser();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("signIn:failure", task.getException());
@@ -295,24 +311,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     //firebase authenticate
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.d("firebaseAuthWithGoogle:",  acct.getId());
-        try{
-            acct.getIdToken();
-            Log.d("Token:", acct.getIdToken());
-            Log.d("ID:", acct.getId());
-            Log.d("ID:", acct.getDisplayName());
-            DisplayName = acct.getDisplayName();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         aunthenticator.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d("signInnComplete:", String.valueOf(task.isSuccessful()));
 
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
@@ -320,7 +324,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                         UserEmail.setText("");
                         Userpassword.setText("");
                         if (!task.isSuccessful()) {
-                            Log.w("signInWithCredential", task.getException());
                             Toast.makeText(MainActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }

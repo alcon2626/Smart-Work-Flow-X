@@ -70,7 +70,7 @@ public class UserProfile extends AppCompatActivity
     private static final String TAG = "Image File";
     Locale local;
     String userID;
-    String UserDisplayName;
+    static String UserDisplayName;
     public static Double valueDBPayRate = 0.0;
     Double netMoney = 0.0;
     long delayInMillis = 2000;
