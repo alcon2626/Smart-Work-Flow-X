@@ -44,7 +44,7 @@
 <string name="Refresh">Refresh</string>
 <string name="ThisWeekTotalH">Total Hrs:</string>
 <string name="CurrentPayRate">Pay rate:</string>
-<string name="Number00">0.0</string>
+<string name="Number00">0.00</string>
 <string name="PastWeeks">Information on prior weeks</string>
 <string name="title_activity_profile">Profile</string>
 <string name="title_activity_profile_v1">ProfileV1</string>

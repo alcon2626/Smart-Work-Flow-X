@@ -34,39 +34,39 @@
         android:ems="10"
         android:hint="@string/SignupHelpEmail"
         android:inputType="textEmailAddress"
-        android:textAppearance="@style/TextAppearance.Design.Hint" />
+        android:textAppearance="@style/TextAppearance.Design.Hint"
+        android:textSize="24sp" />
 
     <EditText
         android:id="@+id/UserPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/Register_button"
+        android:layout_alignEnd="@+id/UserEmail"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="45dp"
         android:ems="10"
         android:hint="@string/SignupHelpPassword"
         android:inputType="textPassword"
         android:textAppearance="@style/TextAppearance.Design.Hint"
-        android:layout_alignEnd="@+id/UserEmail" />
+        android:textSize="24sp" />
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
         android:layout_alignParentTop="true"
-        app:srcCompat="@mipmap/splash_icon" />
+        app:srcCompat="@drawable/welcomeimage" />
 
     <TextView
-        android:text="@string/SetUpWelcomeUser"
+        android:id="@+id/WelcomeUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/WelcomeUser"
-        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
-        android:layout_below="@+id/imageView2"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/imageView2"
+        android:text="@string/SetUpWelcomeUser"
+        android:textAppearance="@android:style/TextAppearance.Holo.Large" />
 
     <EditText
         android:id="@+id/DisplayName"
@@ -80,6 +80,7 @@
         android:ems="10"
         android:hint="@string/Username"
         android:inputType="textPersonName"
-        android:textAppearance="@style/TextAppearance.Design.Hint" />
+        android:textAppearance="@style/TextAppearance.Design.Hint"
+        android:textSize="24sp" />
 
 </RelativeLayout>

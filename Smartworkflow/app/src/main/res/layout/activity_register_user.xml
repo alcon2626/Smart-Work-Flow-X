@@ -59,14 +59,15 @@
         app:srcCompat="@mipmap/splash_icon" />
 
     <TextView
-        android:text="@string/SetUpWelcomeUser"
+        android:id="@+id/WelcomeUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/WelcomeUser"
-        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
-        android:layout_below="@+id/imageView2"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/imageView2"
+        android:text="@string/SetUpWelcomeUser"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+        android:textSize="15sp" />
 
     <EditText
         android:id="@+id/DisplayName"
