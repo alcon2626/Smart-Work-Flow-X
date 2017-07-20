@@ -35,6 +35,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:textSize="24sp"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toRightOf="@+id/textView2"
         app:layout_constraintRight_toLeftOf="@+id/textView4"
@@ -44,63 +45,68 @@
         android:id="@+id/textClock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="7dp"
         android:layout_marginRight="7dp"
-        app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/view"
-        android:layout_marginEnd="7dp" />
+        android:textSize="24sp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/CurrentTime"
         android:layout_marginEnd="9dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/view"
-        android:layout_marginStart="8dp"
-        app:layout_constraintLeft_toRightOf="@+id/textView10"
         android:layout_marginLeft="8dp"
-        app:layout_constraintRight_toLeftOf="@+id/imageButtonClockStatus"
         android:layout_marginRight="8dp"
-        app:layout_constraintHorizontal_bias="0.72" />
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/CurrentTime"
+        android:textSize="24sp"
+        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintLeft_toRightOf="@+id/textView10"
+        app:layout_constraintRight_toLeftOf="@+id/imageButtonClockStatus"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/WorkedTime"
         android:layout_marginLeft="16dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp" />
+        android:text="@string/WorkedTime"
+        android:textSize="24sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="-52dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="16dp"
         android:text="@string/InformationAtGlance"
         android:textAppearance="@style/TextAppearance.AppCompat"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/view"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="-52dp" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <TextView
         android:id="@+id/textViewMonday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
-        android:text="@string/Monday"
-        app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:text="@string/Monday"
+        android:textSize="24sp"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view" />
 
     <TextView
@@ -108,182 +114,196 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/Tuesday"
+        android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewMonday"
-        android:layout_marginStart="16dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewMonday" />
 
     <TextView
         android:id="@+id/textViewWednesday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/Wednesday"
+        android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTuesday"
-        android:layout_marginStart="16dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewTuesday" />
 
     <TextView
         android:id="@+id/textViewThursday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/Thursday"
+        android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewWednesday"
-        android:layout_marginStart="16dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewWednesday" />
 
     <TextView
         android:id="@+id/textViewFriday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/Friday"
+        android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewThursday"
-        android:layout_marginStart="16dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewThursday" />
 
     <TextView
         android:id="@+id/textViewSaturday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/Saturday"
+        android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewFriday"
-        android:layout_marginStart="16dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewFriday" />
 
     <TextView
         android:id="@+id/textViewSunday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="7dp"
         android:text="@string/Sunday"
+        android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSaturday"
-        android:layout_marginStart="16dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewSaturday" />
 
     <TextView
         android:id="@+id/textViewMondayValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="40dp"
+        android:layout_marginTop="8dp"
         android:clickable="true"
         android:text="@string/Time00"
         android:textAppearance="@style/TextAppearance.AppCompat"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/view"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
+        android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="@+id/textView3"
         app:layout_constraintRight_toLeftOf="@+id/textView10"
-        android:layout_marginRight="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/view"
+        app:layout_constraintHorizontal_bias="0.76" />
 
     <TextView
         android:id="@+id/textViewTuesdayValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Time00"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        android:layout_marginStart="37dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/textViewMondayValue"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="37dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="37dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/Time00"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="24sp"
+        app:layout_constraintHorizontal_bias="0.77"
         app:layout_constraintLeft_toLeftOf="@+id/textView3"
         app:layout_constraintRight_toLeftOf="@+id/textView10"
-        android:layout_marginRight="8dp"
-        app:layout_constraintHorizontal_bias="0.51" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewMondayValue" />
 
     <TextView
         android:id="@+id/textViewWednesdayValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Time00"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTuesdayValue"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="18dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/Time00"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="24sp"
+        app:layout_constraintHorizontal_bias="0.81"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/textView10"
-        android:layout_marginRight="8dp"
-        app:layout_constraintHorizontal_bias="0.587" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewTuesdayValue" />
 
     <TextView
         android:id="@+id/textViewThursdayValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:text="@string/Time00"
         android:textAppearance="@style/TextAppearance.AppCompat"
-        app:layout_constraintTop_toBottomOf="@+id/textViewWednesdayValue"
-        android:layout_marginLeft="8dp"
+        android:textSize="24sp"
+        app:layout_constraintHorizontal_bias="0.777"
         app:layout_constraintLeft_toLeftOf="@+id/textView3"
         app:layout_constraintRight_toLeftOf="@+id/textView10"
-        android:layout_marginRight="8dp"
-        app:layout_constraintHorizontal_bias="0.528" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewWednesdayValue" />
 
     <TextView
         android:id="@+id/textViewFridayValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Time00"
-        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:layout_marginLeft="37dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="52dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/textViewThursdayValue"
-        android:layout_marginLeft="37dp"
+        android:text="@string/Time00"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="24sp"
+        app:layout_constraintHorizontal_bias="0.73"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/textView10"
-        android:layout_marginRight="8dp"
-        app:layout_constraintHorizontal_bias="0.49" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewThursdayValue" />
 
     <TextView
         android:id="@+id/textViewSaturdayValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Time00"
-        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:layout_marginLeft="37dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="34dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/textViewFridayValue"
-        android:layout_marginLeft="37dp"
+        android:text="@string/Time00"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="24sp"
+        app:layout_constraintHorizontal_bias="0.759"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/textView10"
-        android:layout_marginRight="8dp"
-        app:layout_constraintHorizontal_bias="0.52" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewFridayValue" />
 
     <TextView
         android:id="@+id/textViewSundayValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Time00"
-        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:layout_marginLeft="44dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="44dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSaturdayValue"
-        android:layout_marginLeft="44dp"
+        android:text="@string/Time00"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="24sp"
+        app:layout_constraintHorizontal_bias="0.748"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/textView10"
-        android:layout_marginRight="8dp"
-        app:layout_constraintHorizontal_bias="0.51" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewSaturdayValue" />
 
     <ImageButton
         android:id="@+id/imageButtonClockStatus"
         android:layout_width="26dp"
         android:layout_height="26dp"
         app:srcCompat="@drawable/clockout"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="9dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="16dp"
@@ -296,12 +316,13 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="21dp"
+        android:layout_marginTop="15dp"
         android:text="@string/ClockStatus"
+        android:textSize="24sp"
         app:layout_constraintRight_toLeftOf="@+id/imageButtonClockStatus"
-        android:layout_marginRight="9dp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -314,27 +335,28 @@
         android:layout_marginEnd="46dp"
         app:layout_constraintLeft_toRightOf="@+id/textView5"
         android:layout_marginLeft="0dp"
-        app:layout_constraintHorizontal_bias="0.076"
-        android:layout_marginTop="32dp"
+        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginTop="45dp"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="@string/Net"
-        android:layout_marginEnd="69dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView9"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
         android:layout_marginBottom="8dp"
-        app:layout_constraintVertical_bias="0.166"
-        android:layout_marginRight="95dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/textView10"
+        android:layout_marginEnd="69dp"
         android:layout_marginLeft="8dp"
-        app:layout_constraintHorizontal_bias="0.891" />
+        android:layout_marginRight="95dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/Net"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintHorizontal_bias="0.622"
+        app:layout_constraintLeft_toRightOf="@+id/textView10"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView9"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textViewNetPay"
@@ -348,6 +370,7 @@
         android:text="@string/Number00"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textColor="@color/SeaGreen"
+        android:textSize="24sp"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -357,59 +380,63 @@
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/ThisWeekTotalH"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        android:layout_marginStart="8dp"
         android:layout_marginEnd="10dp"
-        app:layout_constraintLeft_toRightOf="@+id/textView10"
         android:layout_marginLeft="8dp"
-        app:layout_constraintRight_toLeftOf="@+id/imageButtonClockStatus"
         android:layout_marginRight="8dp"
-        app:layout_constraintHorizontal_bias="0.83" />
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/ThisWeekTotalH"
+        android:textSize="24sp"
+        app:layout_constraintHorizontal_bias="0.627"
+        app:layout_constraintLeft_toRightOf="@+id/textView10"
+        app:layout_constraintRight_toLeftOf="@+id/imageButtonClockStatus"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
         android:id="@+id/textViewTotalHours"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="@string/Number00"
         android:textAppearance="@style/TextAppearance.AppCompat"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/textClock"
+        android:textSize="24sp"
         app:layout_constraintHorizontal_bias="1.0"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textClock" />
 
     <TextView
         android:id="@+id/textViewCurrentPayRate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/Number00"
         android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="24sp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTotalHours"
-        android:layout_marginEnd="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewTotalHours" />
 
     <TextView
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/CurrentPayRate"
-        android:layout_marginStart="8dp"
         android:layout_marginEnd="13dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"
-        app:layout_constraintLeft_toRightOf="@+id/textView10"
         android:layout_marginLeft="8dp"
-        app:layout_constraintRight_toLeftOf="@+id/imageButtonClockStatus"
         android:layout_marginRight="8dp"
-        app:layout_constraintHorizontal_bias="0.823" />
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/CurrentPayRate"
+        android:textSize="24sp"
+        app:layout_constraintHorizontal_bias="0.59"
+        app:layout_constraintLeft_toRightOf="@+id/textView10"
+        app:layout_constraintRight_toLeftOf="@+id/imageButtonClockStatus"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <View
         android:id="@+id/view6"
@@ -433,149 +460,159 @@
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="177dp"
         android:text="@string/PastWeeks"
         android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="24sp"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="177dp"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSundayValue"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewSundayValue" />
 
     <TextView
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/LastWeekEarnings"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view6"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
+        android:textSize="24sp"
         app:layout_constraintHorizontal_bias="0.017"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view6" />
 
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@mipmap/usdollar"
+        android:layout_marginEnd="62dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="@+id/imageView"
         android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/view6"
-        android:layout_marginRight="16dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginEnd="62dp"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintHorizontal_bias="0.99" />
+        app:layout_constraintHorizontal_bias="0.0" />
 
     <TextView
         android:id="@+id/textViewLastWeekEarnings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="@string/Number00"
         android:textColor="@color/SeaGreen"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/view6"
+        android:textSize="24sp"
         app:layout_constraintLeft_toRightOf="@+id/imageView3"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view6"
+        app:layout_constraintHorizontal_bias="0.93" />
 
     <TextView
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="11dp"
         android:text="@string/PriorEarnings"
+        android:textSize="24sp"
+        app:layout_constraintHorizontal_bias="0.021"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/imageView4"
-        android:layout_marginRight="8dp"
-        app:layout_constraintHorizontal_bias="0.02"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView8"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <TextView
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="11dp"
         android:text="@string/PriorEarnings"
+        android:textSize="24sp"
+        app:layout_constraintHorizontal_bias="0.021"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/imageView5"
-        android:layout_marginRight="8dp"
-        app:layout_constraintHorizontal_bias="0.02"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView11"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@mipmap/usdollar"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3"
-        android:layout_marginRight="62dp"
-        app:layout_constraintRight_toRightOf="parent"
         android:layout_marginEnd="63dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"
         android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintHorizontal_bias="0.99" />
+        app:layout_constraintLeft_toLeftOf="@+id/imageView"
+        app:layout_constraintHorizontal_bias="0.0" />
 
     <ImageView
         android:id="@+id/imageView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@mipmap/usdollar"
-        android:layout_marginRight="62dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4"
         android:layout_marginEnd="63dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4"
         android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintHorizontal_bias="0.99" />
+        app:layout_constraintLeft_toLeftOf="@+id/imageView"
+        app:layout_constraintHorizontal_bias="0.0" />
 
     <TextView
         android:id="@+id/textViewPriorOne"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:text="@string/Number00"
         android:textColor="@color/SeaGreen"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
+        android:textSize="24sp"
+        app:layout_constraintHorizontal_bias="0.87"
         app:layout_constraintLeft_toRightOf="@+id/imageView4"
-        android:layout_marginLeft="8dp"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView4"
-        app:layout_constraintHorizontal_bias="0.518"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        android:layout_marginTop="0dp" />
 
     <TextView
         android:id="@+id/textViewPriorTwo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Number00"
-        android:textColor="@color/SeaGreen"
-        app:layout_constraintLeft_toRightOf="@+id/imageView5"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.481"
-        app:layout_constraintTop_toTopOf="@+id/imageView5"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        android:text="@string/Number00"
+        android:textColor="@color/SeaGreen"
+        android:textSize="24sp"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintLeft_toRightOf="@+id/imageView5"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView5"
+        android:layout_marginTop="0dp" />
 
     <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/adView"
@@ -589,7 +626,7 @@
         ads:layout_constraintHorizontal_bias="1.0"
         ads:layout_constraintLeft_toLeftOf="parent"
         ads:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="135dp"
+        android:layout_marginTop="32dp"
         ads:layout_constraintTop_toBottomOf="@+id/imageView5"
         android:layout_marginEnd="8dp" />
 
