@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+
     <application
         android:name=".SmartWorkflow"
         android:allowBackup="true"
@@ -31,10 +32,6 @@
             android:label="@string/title_activity_user_profile"
             android:launchMode="singleTop"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
         </activity>
         <activity
             android:name=".SettingsActivity"
@@ -45,5 +42,6 @@
                 android:value="com.smartworkflow.UserProfile" />
         </activity>
     </application>
+
 
 </manifest>

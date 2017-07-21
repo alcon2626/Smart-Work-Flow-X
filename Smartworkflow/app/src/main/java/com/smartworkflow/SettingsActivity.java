@@ -14,6 +14,7 @@ import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
@@ -24,6 +25,8 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.firebase.client.Firebase;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -136,6 +139,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             return true;
         } else if(id==android.R.id.home)
         {
+            updateuserProfile();
             finish();
             return true;
         }
@@ -149,10 +153,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupActionBar();
-        String name = PreferenceManager.getDefaultSharedPreferences(this).getString("example_text", null);
-        //I need to change the profile name on Firebase
-        UserProfile.UserName.setText(name);
-        Log.d("Name", name);
     }
 
     /**
@@ -205,7 +205,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
-            //SharedPreference  pref_name = new SharedPreference();
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
@@ -283,6 +282,32 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             }
             return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void updateuserProfile(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String name = PreferenceManager.getDefaultSharedPreferences(this).getString("example_text", null);
+        //I need to change the profile name on Firebase
+        if(user != null){
+            Log.d("User", user.toString());
+            Log.d("Name", name);
+            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                    .setDisplayName(name)
+                    .build();
+            user.updateProfile(profileUpdates)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        static final String TAG = "Firebase";
+
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Log.d(TAG, "User profile updated.");
+                            }
+                        }
+                    });
+            //update
+            UserProfile.UserName.setText(name);
         }
     }
 }

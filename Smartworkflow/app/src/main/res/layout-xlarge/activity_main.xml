@@ -42,7 +42,7 @@
         android:layout_marginTop="6dp"
         android:ems="10"
         android:hint="@string/SignInHelpPassword"
-        android:inputType="textPassword"
+        android:inputType="@+id/SignInPassword"
         android:textAppearance="@style/TextAppearance.Design.Hint"
         android:textSize="35sp"
         app:layout_constraintLeft_toLeftOf="parent"

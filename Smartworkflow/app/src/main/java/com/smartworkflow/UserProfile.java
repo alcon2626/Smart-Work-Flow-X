@@ -36,6 +36,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -462,6 +463,7 @@ public class UserProfile extends AppCompatActivity
                 StopTimer(weekOfYear, Day);
             }
             //i need to stop clock and register time on DB
+            LoginManager.getInstance().logOut(); //clear button try 1
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(UserProfile.this, MainActivity.class);
             //start intent
