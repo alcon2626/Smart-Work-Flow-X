@@ -2,8 +2,8 @@
 <string name="Register">Register!</string>
 <string name="fb_login_protocol_scheme">fb442027039499004</string>
 <string name="facebook_app_id">442027039499004</string>
-<string name="app_name">Smart workflow</string>
-<string name="Welcome">Welcome to Smart Workflow</string>
+<string name="app_name">Tiflow</string>
+<string name="Welcome">Welcome to Tiflow</string>
 <string name="SignInHelpPassword">Enter your password</string>
 <string name="SignInHelpEmail">Enter your email</string>
 <string name="SignupHelpPassword">Password</string>
@@ -12,7 +12,7 @@
 <string name="title_activity_user_profile">User Profile</string>
 <string name="EnterEmail">Enter your email</string>
 <string name="EnterPassword">Enter your password</string>
-<string name="SetUpWelcomeUser">Welcome to Smart workflow, let\'s get you started.</string>
+<string name="SetUpWelcomeUser">Welcome to Tiflow, let\'s get you started.</string>
 <string name="Name">Enter your name</string>
 <string name="Company">Organization name</string>
 <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
