@@ -78,7 +78,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="115dp"
         ads:adSize="BANNER"
         ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
         ads:layout_constraintHorizontal_bias="0.285"
@@ -184,6 +184,20 @@
         ads:layout_constraintTop_toBottomOf="@+id/SignInEmail"
         ads:srcCompat="@mipmap/ic_exit_to_app_black_24dp"
         android:layout_marginEnd="8dp" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="2dp"
+        android:text="@string/Version"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        ads:layout_constraintHorizontal_bias="1.0"
+        ads:layout_constraintLeft_toRightOf="@+id/imageButtonGooglesignin"
+        ads:layout_constraintRight_toRightOf="parent"
+        ads:layout_constraintTop_toBottomOf="@+id/adView" />
 
 
 </android.support.constraint.ConstraintLayout>

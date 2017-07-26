@@ -1,6 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
+
+    lintOptions {
+        abortOnError false        // true by default
+        checkAllWarnings false
+        checkReleaseBuilds false
+        ignoreWarnings true       // false by default
+        quiet true                // false by default
+    }
+
     packagingOptions {
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/LICENSE'
@@ -24,6 +33,33 @@ android {
     }
     productFlavors {
     }
+}
+// Put this in 'root' `build.gradle`, in allprojects or subprojects
+tasks.withType(JavaCompile) {
+    // Try to turn them all off automatically
+    options.compilerArgs << '-Xlint:none'
+
+    // Turn them off manually
+    options.compilerArgs << '-Xlint:-auxiliaryclass'
+    options.compilerArgs << '-Xlint:-cast'
+    options.compilerArgs << '-Xlint:-classfile'
+    options.compilerArgs << '-Xlint:-deprecation'
+    options.compilerArgs << '-Xlint:-dep-ann'
+    options.compilerArgs << '-Xlint:-divzero'
+    options.compilerArgs << '-Xlint:-empty'
+    options.compilerArgs << '-Xlint:-fallthrough'
+    options.compilerArgs << '-Xlint:-finally'
+    options.compilerArgs << '-Xlint:-options'
+    options.compilerArgs << '-Xlint:-overloads'
+    options.compilerArgs << '-Xlint:-overrides'
+    options.compilerArgs << '-Xlint:-path'
+    options.compilerArgs << '-Xlint:-processing'
+    options.compilerArgs << '-Xlint:-rawtypes'
+    options.compilerArgs << '-Xlint:-serial'
+    options.compilerArgs << '-Xlint:-static'
+    options.compilerArgs << '-Xlint:-try'
+    options.compilerArgs << '-Xlint:-unchecked'
+    options.compilerArgs << '-Xlint:-varargs'
 }
 
 dependencies {

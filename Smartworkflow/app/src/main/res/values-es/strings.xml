@@ -2,8 +2,8 @@
     <string name="facebook_app_id">442027039499004</string>
     <string name="Register">Unete ya!</string>
     <string name="fb_login_protocol_scheme">fb442027039499004</string>
-    <string name="app_name">Tiflow</string>
-    <string name="Welcome">Bienvenido a Tiflow</string>
+    <string name="app_name">KronoLog</string>
+    <string name="Welcome">Bienvenido a KronoLog</string>
     <string name="SignInHelpPassword">Introduzca su contraseña</string>
     <string name="SignInHelpEmail">Introduzca su correo</string>
     <string name="SignupHelpPassword">Contraseña</string>
@@ -12,7 +12,8 @@
     <string name="title_activity_user_profile">Perfil de Usuario </string>
     <string name="EnterEmail">Introduzca su correo</string>
     <string name="EnterPassword">Introduzca su contraseña</string>
-    <string name="SetUpWelcomeUser">Bienvenido a Tiflow, vamos a comenzar.</string>
+    <string name="SetUpWelcomeUser">Bienvenido a KronoLog, vamos a comenzar.</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="Name">Introduzca su nombre</string>
     <string name="Username">Nombre</string>
     <string name="ClockStatus">Estado del Reloj&#8230;</string>
@@ -33,6 +34,11 @@
     <string name="LogOut">Salir</string>
     <string name="SetPayRate">Establecer pago</string>
     <string name="ResetClock">Reiniciar reloj</string>
+    <string name="Send">Enviar</string>
+    <string name="Help">Ayuda &amp; Contacto</string>
+    <string name="HelpMessage">Para sugerencias o para reportar errores acerca de la
+        applicacion por favor envie un correo a leosoftwaredeveloper@gmail.com \n Gracias por user KronoLog!</string>
+    <string name="Version">Versión 1.0</string>
     <string name="Communicate">Comunicar</string>
     <string name="Share">Compartir</string>
     <string name="Net">Salario:</string>

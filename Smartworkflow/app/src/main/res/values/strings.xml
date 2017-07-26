@@ -2,8 +2,12 @@
 <string name="Register">Register!</string>
 <string name="fb_login_protocol_scheme">fb442027039499004</string>
 <string name="facebook_app_id">442027039499004</string>
-<string name="app_name">Tiflow</string>
-<string name="Welcome">Welcome to Tiflow</string>
+<string name="app_name">KronoLog</string>
+<string name="Welcome">Welcome to KronoLog</string>
+<string name="Help">Help &amp; Contact</string>
+    <string name="HelpMessage">For suggestions or to report errors about the application please send an email to
+        leosoftwaredeveloper@gmail.com \n Thanks for using KronoLog!</string>
+<string name="Version">Version 1.0</string>
 <string name="SignInHelpPassword">Enter your password</string>
 <string name="SignInHelpEmail">Enter your email</string>
 <string name="SignupHelpPassword">Password</string>
@@ -12,15 +16,12 @@
 <string name="title_activity_user_profile">User Profile</string>
 <string name="EnterEmail">Enter your email</string>
 <string name="EnterPassword">Enter your password</string>
-<string name="SetUpWelcomeUser">Welcome to Tiflow, let\'s get you started.</string>
+<string name="SetUpWelcomeUser">Welcome to KronoLog, let\'s get you started.</string>
 <string name="Name">Enter your name</string>
-<string name="Company">Organization name</string>
-<string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+<string name="banner_ad_unit_id">ca-app-pub-1762917079825621/4741555998</string>
 <string name="Username">Name</string>
 <string name="ClockStatus">Clock Status&#8230;</string>
 <string name="Profile">Profile</string>
-<string name="Company_Logo">Company Logo</string>
-<string name="LastName">Last Name</string>
 <string name="CurrentTime">Time:</string>
 <string name="WorkedTime">Worked Today:</string>
 <string name="UpdatePicture">Take Picture</string>

@@ -1,10 +1,15 @@
 package com.smartworkflow;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -51,6 +56,7 @@ import java.security.NoSuchAlgorithmException;
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
     private static final int RC_SIGN_IN = 1;
     private AdView mAdView;
+    boolean Connection = false;
     ImageButton userSingUp;
     ImageButton UserSignIn;
     LoginButton facebookSignin;
@@ -71,6 +77,29 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+        //check internet connection
+        Connection = isNetworkAvailable();
+
+        if(Connection){
+
+        }else{
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+            } else {
+                builder = new AlertDialog.Builder(this);
+            }
+            builder.setTitle("No internet connection")
+                    .setMessage("Please verify your internet connection")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with delete
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
+
         //ad
         MobileAds.initialize(this, "ca-app-pub-1762917079825621/4741555998");
         mAdView = (AdView) findViewById(R.id.adView);
@@ -329,6 +358,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                         // ...
                     }
                 });
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
         

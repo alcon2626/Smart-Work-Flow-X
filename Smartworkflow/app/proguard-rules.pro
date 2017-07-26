@@ -6,3 +6,5 @@
     public static int d(...);
     public static int e(...);
 }
+-dontwarn org.w3c.dom.bootstrap.DOMImplementationRegistry
+-optimizations !class/unboxing/enum
