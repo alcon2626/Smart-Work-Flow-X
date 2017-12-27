@@ -40,6 +40,10 @@
                 android:id="@+id/nav_help"
                 android:icon="@mipmap/ic_help_black"
                 android:title="@string/Help"/>
+            <item
+                android:id="@+id/nav_admin"
+                android:icon="@mipmap/ic_adb_black_24dp"
+                android:title="Admin" />
         </menu>
     </item>
 

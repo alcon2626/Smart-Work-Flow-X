@@ -30,6 +30,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -247,6 +248,17 @@ public class UserProfile extends AppCompatActivity
                 refreshValues();}
         });
 
+
+        //show admin button
+        if(userID == "5SfKFQjMajOH5tinU866g49qD2H2"){
+            navigationView = findViewById(R.id.nav_view);
+            Menu nav_Menu = navigationView.getMenu();
+            nav_Menu.findItem(R.id.nav_admin).setVisible(true);
+        }else{
+            navigationView = findViewById(R.id.nav_view);
+            Menu nav_Menu = navigationView.getMenu();
+            nav_Menu.findItem(R.id.nav_admin).setVisible(true);
+        }
     }
 
     //Refresh  _____________________________________________________________________________________
@@ -491,6 +503,9 @@ public class UserProfile extends AppCompatActivity
                     })
                     .setIcon(android.R.drawable.ic_dialog_info)
                     .show();
+        } else if (id == R.id.nav_admin) {
+            Intent Admin = new Intent(UserProfile.this, Admin.class);
+            startActivity(Admin);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

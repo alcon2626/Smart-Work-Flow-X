@@ -13,7 +13,7 @@
 
     <Button
         android:id="@+id/Register_button"
-        android:layout_width="wrap_content"
+        android:layout_width="40dp"
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"

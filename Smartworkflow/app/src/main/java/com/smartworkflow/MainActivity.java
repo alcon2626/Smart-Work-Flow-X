@@ -32,7 +32,6 @@ import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -55,7 +54,6 @@ import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
     private static final int RC_SIGN_IN = 1;
-    private AdView mAdView;
     boolean Connection = false;
     ImageButton userSingUp;
     ImageButton UserSignIn;
@@ -99,12 +97,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
         }
-
-        //ad
-        MobileAds.initialize(this, "ca-app-pub-1762917079825621/4741555998");
-        mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
         //init user authenticator
         aunthenticator = FirebaseAuth.getInstance();
         // Configure Google Sign In
