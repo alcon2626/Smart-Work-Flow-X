@@ -1,4 +1,4 @@
-package com.smartworkflow;
+package com.kronolog;
 
 import org.junit.Test;
 

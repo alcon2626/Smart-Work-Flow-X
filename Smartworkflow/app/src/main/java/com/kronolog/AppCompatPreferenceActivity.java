@@ -1,4 +1,4 @@
-package com.smartworkflow;
+package com.kronolog;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

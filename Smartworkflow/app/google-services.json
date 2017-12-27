@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:390858261168:android:557033609938bc5f",
         "android_client_info": {
-          "package_name": "com.smartworkflow"
+          "package_name": "com.kronolog"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "390858261168-6634urr3lpac0mvnclcmpcof875v6kdh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.smartworkflow",
+            "package_name": "com.kronolog",
             "certificate_hash": "70678DD33E5FDB394560C4FF78ED1446E9208907"
           }
         },

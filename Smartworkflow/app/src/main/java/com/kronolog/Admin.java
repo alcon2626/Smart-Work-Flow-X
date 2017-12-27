@@ -1,7 +1,6 @@
-package com.smartworkflow;
+package com.kronolog;
 
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

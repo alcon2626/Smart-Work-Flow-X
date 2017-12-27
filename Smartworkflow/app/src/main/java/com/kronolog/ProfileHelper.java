@@ -1,21 +1,12 @@
-package com.smartworkflow;
+package com.kronolog;
 
-import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.text.InputType;
-import android.text.Layout;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Locale;

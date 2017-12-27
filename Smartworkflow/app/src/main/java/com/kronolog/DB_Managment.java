@@ -1,4 +1,4 @@
-package com.smartworkflow;
+package com.kronolog;
 
 import android.app.Activity;
 import android.os.SystemClock;
@@ -10,8 +10,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import java.util.Calendar;
-import java.util.Date;
+
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
