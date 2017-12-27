@@ -1,6 +1,5 @@
 package com.smartworkflow;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,9 +15,11 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -30,7 +31,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -49,8 +49,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -104,6 +104,7 @@ public class UserProfile extends AppCompatActivity
     final int weekOfYear = cal.get(Calendar.WEEK_OF_YEAR);
 
     //creates most things I would say ______________________________________________________________
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,7 +112,7 @@ public class UserProfile extends AppCompatActivity
 
         //ad
         MobileAds.initialize(this, "ca-app-pub-1762917079825621/4741555998");
-        mAdView = (AdView) findViewById(R.id.adView);
+        mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
@@ -141,15 +142,15 @@ public class UserProfile extends AppCompatActivity
         Intent intent = getIntent();
         userID = intent.getStringExtra("USERID");
         //days of week values from textView
-        DayMonday = (TextView) findViewById(R.id.textViewMondayValue);
-        DayTuesday = (TextView) findViewById(R.id.textViewTuesdayValue);
-        DayWednesday = (TextView) findViewById(R.id.textViewWednesdayValue);
-        DayThursday = (TextView) findViewById(R.id.textViewThursdayValue);
-        DayFriday = (TextView) findViewById(R.id.textViewFridayValue);
-        DaySaturday = (TextView) findViewById(R.id.textViewSaturdayValue);
-        DaySunday = (TextView) findViewById(R.id.textViewSundayValue);
-        textviewTotalHours = (TextView) findViewById(R.id.textViewTotalHours);
-        payRateFromDB = (TextView) findViewById(R.id.textViewCurrentPayRate);
+        DayMonday = findViewById(R.id.textViewMondayValue);
+        DayTuesday = findViewById(R.id.textViewTuesdayValue);
+        DayWednesday = findViewById(R.id.textViewWednesdayValue);
+        DayThursday = findViewById(R.id.textViewThursdayValue);
+        DayFriday = findViewById(R.id.textViewFridayValue);
+        DaySaturday = findViewById(R.id.textViewSaturdayValue);
+        DaySunday = findViewById(R.id.textViewSundayValue);
+        textviewTotalHours = findViewById(R.id.textViewTotalHours);
+        payRateFromDB = findViewById(R.id.textViewCurrentPayRate);
         //display stuff
         dbmanager.PopulateDaysAtGlance(userID, weekOfYear); //loads time ASAP for Days
         dbmanager.GetTime(userID, weekOfYear, Day);//loads time ASAP
@@ -157,19 +158,19 @@ public class UserProfile extends AppCompatActivity
         //get stuff
         dbmanager.getPayRate(userID);
         //Chrono creation
-        ProfileChrono = (Chronometer) findViewById(R.id.chronometer1);
+        ProfileChrono = findViewById(R.id.chronometer1);
         //clock status init
-        ClockStatus = (ImageButton) findViewById(R.id.imageButtonClockStatus);
+        ClockStatus = findViewById(R.id.imageButtonClockStatus);
         //textviews
-        netPay = (TextView) findViewById(R.id.textViewNetPay);
-        lastWeekEarnings = (TextView) findViewById(R.id.textViewLastWeekEarnings);
-        priorOne = (TextView) findViewById(R.id.textViewPriorOne);
-        priorTwo = (TextView) findViewById(R.id.textViewPriorTwo);
+        netPay = findViewById(R.id.textViewNetPay);
+        lastWeekEarnings = findViewById(R.id.textViewLastWeekEarnings);
+        priorOne = findViewById(R.id.textViewPriorOne);
+        priorTwo = findViewById(R.id.textViewPriorTwo);
         //toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //as it says below floating button, when pressed it starts or stops the Chrono
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,8 +198,8 @@ public class UserProfile extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         //this to change slide profile name
         View header=navigationView.getHeaderView(0);
-        UserName = (TextView)header.findViewById(R.id.textViewUserName);
-        Profile_Image = (ImageView)header.findViewById(R.id.UserProfileImage);
+        UserName = header.findViewById(R.id.textViewUserName);
+        Profile_Image = header.findViewById(R.id.UserProfileImage);
         UserName.setText(UserDisplayName);
         //loading image from database for profile
         Profile_Image.setImageResource(R.drawable.genericperson);
@@ -250,14 +251,41 @@ public class UserProfile extends AppCompatActivity
 
 
         //show admin button
-        if(userID == "5SfKFQjMajOH5tinU866g49qD2H2"){
+        if(Objects.equals(userID, "5SfKFQjMajOH5tinU866g49qD2H2")){
             navigationView = findViewById(R.id.nav_view);
             Menu nav_Menu = navigationView.getMenu();
             nav_Menu.findItem(R.id.nav_admin).setVisible(true);
         }else{
             navigationView = findViewById(R.id.nav_view);
             Menu nav_Menu = navigationView.getMenu();
-            nav_Menu.findItem(R.id.nav_admin).setVisible(true);
+            nav_Menu.findItem(R.id.nav_admin).setVisible(false);
+        }
+
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(UserProfile.this,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(UserProfile.this,
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(UserProfile.this,
+                        new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        1);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
         }
     }
 
@@ -303,7 +331,7 @@ public class UserProfile extends AppCompatActivity
     private Boolean exit = false;
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         assert drawer != null;
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -435,8 +463,9 @@ public class UserProfile extends AppCompatActivity
             builder.show();
 
         } else if (id == R.id.nav_share) {
+
             //close the drawer
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            DrawerLayout drawer = findViewById(R.id.drawer_layout);
             assert drawer != null;
             drawer.closeDrawer(GravityCompat.START);
             //wait for it to close
@@ -452,10 +481,11 @@ public class UserProfile extends AppCompatActivity
                     //saves the screenshot
                     getScreenShot(rootView);
                     //get the screenshot
-                    Bitmap b = loadBitmap(UserProfile.this, "Screenshot.jpeg");
+                    Bitmap b = loadBitmap(UserProfile.this);
                     //Bitmap c = Bitmap.createScaledBitmap(b, 150, 150, true);
                     Uri uriToImage = ProfileHelper.getImageUri(UserProfile.this, b);
                     //share intent
+                    pd.dismiss();
                     Intent shareIntent = new Intent();
                     shareIntent.setAction(Intent.ACTION_SEND);
                     shareIntent.putExtra(Intent.EXTRA_STREAM, uriToImage);
@@ -465,7 +495,7 @@ public class UserProfile extends AppCompatActivity
                     } catch (Exception ex) {
                         Log.d("ERROR", ex.getMessage());
                     }
-                    pd.dismiss();
+
                 }
             }, 500);
 
@@ -545,13 +575,13 @@ public class UserProfile extends AppCompatActivity
         if (bitmap != null){
             Log.d(TAG, "Screenshoted");
         }
-        saveFile(UserProfile.this, bitmap, "Screenshot.jpeg");
+        saveFile(UserProfile.this, bitmap);
     }
     //store the screenshot so that I can use it and send it (not working)___________________________
-    public static void saveFile(Context context, Bitmap b, String picName){
+    public static void saveFile(Context context, Bitmap b){
         FileOutputStream fos;
         try {
-            fos = context.openFileOutput(picName, Context.MODE_PRIVATE);
+            fos = context.openFileOutput("Screenshot.jpeg", Context.MODE_PRIVATE);
             b.compress(Bitmap.CompressFormat.JPEG, 100, fos);
             fos.close();
             Log.d(TAG, "Save Success");
@@ -567,11 +597,11 @@ public class UserProfile extends AppCompatActivity
 
     }
     //Get Image ____________________________________________________________________________________
-    public static Bitmap loadBitmap(Context context, String picName){
+    public static Bitmap loadBitmap(Context context){
         Bitmap b = null;
         FileInputStream fis;
         try {
-            fis = context.openFileInput(picName);
+            fis = context.openFileInput("Screenshot.jpeg");
             b = BitmapFactory.decodeStream(fis);
             fis.close();
 
@@ -665,7 +695,6 @@ public class UserProfile extends AppCompatActivity
                     Toast.makeText(UserProfile.this, "Permission denied to read your External " +
                             "storage", Toast.LENGTH_SHORT).show();
                 }
-                return;
             }
 
             // other 'case' lines to check for other
@@ -674,3 +703,5 @@ public class UserProfile extends AppCompatActivity
     }
 
 }
+
+

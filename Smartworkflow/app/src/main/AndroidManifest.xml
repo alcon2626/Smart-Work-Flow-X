@@ -64,7 +64,7 @@
             android:name=".UserProfile"
             android:label="@string/title_activity_user_profile"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
@@ -73,7 +73,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.smartworkflow.UserProfile" />
         </activity>
-        <activity android:name=".Admin"></activity>
+        <activity android:name=".Admin" />
     </application>
 
 </manifest>

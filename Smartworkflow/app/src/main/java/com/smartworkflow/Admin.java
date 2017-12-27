@@ -12,6 +12,8 @@ import android.widget.TextView;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import static android.content.pm.PackageManager.*;
+
 public class Admin extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,19 +22,20 @@ public class Admin extends AppCompatActivity {
 
 
         try {
-            TextView Mykeyhash = (TextView) findViewById(R.id.Mykeyhash);
+            TextView Mykeyhash = findViewById(R.id.Mykeyhash);
             PackageInfo info = getPackageManager().getPackageInfo(
-                    "com.facebook.samples.loginhowto",
-                    PackageManager.GET_SIGNATURES);
+                    "com.smartworkflow",
+                    GET_SIGNATURES);
             for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
                 Mykeyhash.setText(String.format("KeyHash: %s", Base64.encodeToString(md.digest(), Base64.DEFAULT)));
             }
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch (NameNotFoundException e) {
+            Log.d("Error A", e.getMessage());
 
         } catch (NoSuchAlgorithmException e) {
-
+            Log.d("Error B", e.getMessage());
         }
     }
 }

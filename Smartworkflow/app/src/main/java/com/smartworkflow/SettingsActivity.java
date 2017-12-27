@@ -10,28 +10,24 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
+import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
-
-import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-
 import java.util.List;
+
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -53,6 +49,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
             String stringValue = value.toString();
+
+
 
             if (preference instanceof ListPreference) {
                 // For list preferences, look up the correct display value in
@@ -288,6 +286,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     private void updateuserProfile(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String name = PreferenceManager.getDefaultSharedPreferences(this).getString("example_text", null);
+        String default_name = user.getDisplayName();
+        if(name == null || name == "" || name.equals("John Smith")){
+           name = default_name;
+        }else{
+            //nothing
+        }
         //I need to change the profile name on Firebase
         if(user != null){
             Log.d("User", user.toString());
